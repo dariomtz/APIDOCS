@@ -65,12 +65,16 @@ class UserController {
 	}
 
 	async signIn(email, password){
-		this.auth.signInWithEmailAndPassword(email, password)
-		.then((UserCrendential) => {
-			return UserCrendential.user;
-		})
-		.catch((error) => {
-		  return error;
+		return new Promise(resolve => {
+			this.auth.signInWithEmailAndPassword(email, password)
+			.then((UserCrendential) => {
+				resolve(true);
+				return;
+			})
+			.catch((error) => {
+				resolve(error);
+			  	return;
+			});
 		});
 	}
 
