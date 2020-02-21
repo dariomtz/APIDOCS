@@ -11,15 +11,15 @@ app.set('view engine', '.html');
 app.use(express.static(path.join(__dirname, 'public')));
 
 app.get('/', (req, res) => {
-  res.render('wellcome');
+  res.render('welcome');
 });
 
-app.get('/login', (req, res) => {
-	res.render('auth', {login: true})
+app.get('/signin', (req, res) => {
+	res.render('auth', {signin: true})
 });
 
 app.get('/signup', (req, res) => {
-	res.render('auth', {login: false})
+	res.render('auth', {signin: false})
 });
 
 app.get('/:userId', (req, res) => {

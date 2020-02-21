@@ -1,9 +1,8 @@
 /**
-The UserController class helps you
+The session handles everything that has to do with user accounts
 **/
 
-
-class UserController {
+class Session {
 	constructor(firebase){
 		this.auth = firebase.auth();
 		this.db = firebase.database();
@@ -12,7 +11,7 @@ class UserController {
 		this.observer();
 	}
 
-	async signUp(email, password, username){
+	signUp(email, password, username, photoURL = null){
 
 		return new Promise(resolve => {
 		    if(typeof username !== "string"){
@@ -38,33 +37,35 @@ class UserController {
 			}
 
 			this.auth.createUserWithEmailAndPassword(email, password)
-			.then((UserCrendential) => {
+			.then(UserCrendential => {
 				this.user = this.auth.currentUser;
-				this.user.updateProfile({
+				return this.user.updateProfile({
 					displayName: username,
-				})
-				.then(() => {
-					this.db.ref(this.user.displayName).set({
-						userName: this.user.displayName,
-						userId: this.user.uid,
-						email: this.user.email,
-						photoURL: this.user.photoURL,
-						projects: null,
-					})
-
-					//return true on success
-					resolve(true);
-					return;
-				})
+					photoURL: photoURL,
+				});
 			})
-			.catch((error) => {
+			.then(v => {
+				this.user = this.auth.currentUser;
+				return this.db.ref(this.user.displayName).set({
+					userName: this.user.displayName,
+					userId: this.user.uid,
+					email: this.user.email,
+					photoURL: this.user.photoURL,
+					projects: null,
+				});
+			})
+			.then(() => {
+				resolve(true);
+				return;
+			})
+			.catch(error => {
 			  resolve(error);
 			  return;
 			});
 		});
 	}
 
-	async signIn(email, password){
+	signIn(email, password){
 		return new Promise(resolve => {
 			this.auth.signInWithEmailAndPassword(email, password)
 			.then((UserCrendential) => {
@@ -79,17 +80,19 @@ class UserController {
 	}
 
 	signOut(){
+
 		this.auth.signOut();
-		this.user = null;
 	}
 
 	observer(){
 		this.auth.onAuthStateChanged((user) => {
 		  if (user) {
 		    this.logged = true;
+		    this.user = this.auth.currentUser;
 		  } else {
 		    this.logged = false;
+		    this.user = null;
 		  }
-});
+		});
 	}
 }
