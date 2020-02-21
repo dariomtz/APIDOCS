@@ -35,13 +35,15 @@ class User {
 	}
 
 	addProject(title, projectId, description = ''){
+		let date = new Date();
 		this.db.ref(this.user + '/projects').child(projectId).set({
 			title: title,
 			projectId: projectId,
-			created: Date.now().toISOString(),
-			updated: Date.now().toISOString(),
+			created: date.toISOString(),
+			updated: date.toISOString(),
 			author: this.user,
-			description: description,		})
+			description: description,
+		})
 		.then( any => {
 			window.location.href = "/" + this.user + "/" + projectId;
 		})
@@ -50,3 +52,9 @@ class User {
 		});
 	}
 }
+
+
+
+
+
+

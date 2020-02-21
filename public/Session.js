@@ -55,6 +55,7 @@ class Session {
 				});
 			})
 			.then(() => {
+				window.location.href = "/" + this.user.displayName;
 				resolve(true);
 				return;
 			})
@@ -69,6 +70,7 @@ class Session {
 		return new Promise(resolve => {
 			this.auth.signInWithEmailAndPassword(email, password)
 			.then((UserCrendential) => {
+				window.location.href = "/" + UserCrendential.user.displayName;
 				resolve(true);
 				return;
 			})
@@ -80,8 +82,8 @@ class Session {
 	}
 
 	signOut(){
-
 		this.auth.signOut();
+		window.location.href = '/';
 	}
 
 	observer(){
@@ -89,6 +91,7 @@ class Session {
 		  if (user) {
 		    this.logged = true;
 		    this.user = this.auth.currentUser;
+
 		  } else {
 		    this.logged = false;
 		    this.user = null;
