@@ -9,7 +9,7 @@ To easily run this project in your computer:
 3.Navigate to the project in the comand line and type the following comands:
 
   >firebase login
-  
+  >
   >firebase init
   
 4.Choose the Firebase project you just created.
@@ -21,6 +21,7 @@ To easily run this project in your computer:
   >firebase serve
 
 **For collaborators of this project:**
+
 Using the previos list of steps:
 
 1.Make step 1 and 3 and skip step 2. 
