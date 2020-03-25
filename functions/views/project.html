@@ -1,16 +1,97 @@
-<h1>Project Page</h1>
+<div id="project-page" class="p-5 d-none container ">
+	<div id="project-info" class="pb-2">
+		<h1 id="project-title"></h1>
+		<span id="project-id" class="h6 text-muted"></span>
 
-This is where you can edit a page if it is your API documentation.
-<br><br>
+	    <hr>
 
-If it is not, here you can read the documentation.
-<br><br>
+	    <p id="project-description" class="text-justify"></p>
+	            
+	    <h6>Author @<span>{{ userId }}</span></h6>
+	  
+	    <h6>Base URL: <span id="base-url" class="font-italic"></span></h6>
 
-Here you can see all the API documentations the user has done.
-<br><br>
+	    <div class="d-flex justify-content-end">
+			<button id="edit-project" type="button" class="btn btn-outline-warning d-none edit mx-1">Edit</button>
+			<button id="delete-project" type="button" class="btn btn-outline-danger d-none edit mx-1">Delete</button>
+		</div>
+	</div>
 
-The user id of this page is "{{ userId }}"
-<br><br>
+	<div id="project-form" class="pb-2 d-none">
+		<button id="btn-close-project-form" type="button" class="close" aria-label="Close">
+				<span aria-hidden="true">&times;</span>
+			</button>
+		<div class="my-3">
+			<h4>Title</h4>
+	    	<input id="input-title" class="form-control" type="text" placeholder="Title" maxlength="70" size="80">
+		</div>
+	    
+		<div class="my-3">
+			<h4>Project Identifier</h4>
+		    <input id="input-project-id" class="form-control" type="text" placeholder="Project ID" maxlength="30" size="35">
+		    <small id="emailHelp" class="form-text text-muted">This ID will show up in your Project URL.</small>
+		</div>
+	    
+		<div class="my-3">
+			<h4>Description</h4>
+        	<textarea id="textarea-description" class="form-control rounded" id="input-description" placeholder="Description" rows="2"></textarea>
+		</div>
 
-The project id of this page is "{{ projectId }}"
-<br><br>
+		<div class="my-3">
+			<h4>Base URL</h4>
+		    <input id="input-baseURL" class="form-control" type="text" placeholder="Base URL" maxlength="30" size="35">
+		</div>
+
+	    <div class="d-flex justify-content-end">
+			<button id="save-project" type="button" class="btn btn-primary">Save</button>
+		</div>
+	</div>
+	<div id="resources" class="my-2">
+		<div id="resource-list" class="">
+			
+		</div>
+		
+		<div id="add-resource" class=" m-auto d-flex flex-column justify-content-center">
+
+			<div id="add-resource-form" class="d-none container-fluid my-2">
+				<hr>
+				<button id="btn-close-add-resource" type="button" class="close" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+				<div class="my-3">
+					<h4>Title</h4>
+			    	<input id="add-resource-title" class="form-control" type="text" placeholder="Title" maxlength="70" size="80">
+				</div>
+			    
+				<div class="my-3">
+					<h4>Description</h4>
+		        	<textarea id="add-resource-description" class="form-control rounded" id="input-description" placeholder="Description" rows="2"></textarea>
+				</div>
+
+			    <div class="d-flex justify-content-end">
+			    	<button id="cancel-save-resource" type="button" class="btn btn-secondary mx-1">Cancel</button>
+					<button id="save-resource" type="button" class="btn btn-primary mx-1">Save</button>
+				</div>
+				<hr>
+			</div>
+
+			<button id="btn-add-resource" type="button" class="btn btn-outline-primary btn-block d-none edit"><span class="h2">+</span></button>
+		</div>
+	</div>
+    
+
+</div>
+
+<div id="not-found-user" class="p-5 d-none">
+	<h1> 404 Not Found: The username "{{ userId }}" does not belong to any user.</h1>
+</div>
+
+<div id="not-found-project" class="p-5 d-none">
+	<h1> 404 Not Found: This user does not have a project named "{{ projectId }}".</h1>
+</div>
+
+<div id="spinner-user-page" class="d-flex justify-content-center">
+	<div class="spinner-border m-5 text-primary" role="status">
+    	<span class="sr-only">Loading...</span>
+	</div>
+</div>

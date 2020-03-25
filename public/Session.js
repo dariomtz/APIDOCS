@@ -1,40 +1,23 @@
-/**
-The session handles everything that has to do with user accounts
-**/
-
 class Session {
-	constructor(firebase){
+	constructor(firebase, listener){
 		this.auth = firebase.auth();
 		this.db = firebase.database();
+		this.observer();
 		this.user = null;
 		this.logged = false;
-		this.observer();
+		this.listener = document.getElementById(listener);
 	}
 
 	signUp(email, password, username, photoURL = null){
 
 		return new Promise(resolve => {
-		    if(typeof username !== "string"){
-				resolve(false);
-				return;
-			}
-			
-			var validCharacters = '1234567890qwertyuiopasdfghjklzxcvbnm-QWERTYUIOPASDFGHJKLZXCVBNM';
+		    var usernameValidation = validateSlug(username);
 
-			for (var i = 0; i < username.length; i++) {
-				var flag = false;
-
-				for (var j = 0; j < validCharacters.length; j++) {
-					if(username[i] == validCharacters[j]){
-						flag = true
-					}
-				}
-
-				if (!flag) {
-					resolve(false);
-					return;
-				}
-			}
+		    if (usernameValidation instanceof Error) {
+		    	resolve(usernameValidation);
+		    	usernameValidation.name = 'Invalid user name';
+		    	return;
+		    }
 
 			this.auth.createUserWithEmailAndPassword(email, password)
 			.then(UserCrendential => {
@@ -60,6 +43,7 @@ class Session {
 				return;
 			})
 			.catch(error => {
+				error.name = 'Invalid sign up'
 			  resolve(error);
 			  return;
 			});
@@ -75,6 +59,13 @@ class Session {
 				return;
 			})
 			.catch((error) => {
+				error.name = 'Invalid sign in'
+				if(error.message === 'There is no user record corresponding to this identifier. The user may have been deleted.'){
+					error.message = 'There is no user record corresponding to this email.';
+				}else if (error.message === 'The password is invalid or the user does not have a password.') {
+					error.message = 'The password is invalid.';
+				}
+
 				resolve(error);
 			  	return;
 			});
@@ -83,19 +74,23 @@ class Session {
 
 	signOut(){
 		this.auth.signOut();
-		window.location.href = '/';
+		window.location.reload();
 	}
 
 	observer(){
 		this.auth.onAuthStateChanged((user) => {
-		  if (user) {
-		    this.logged = true;
-		    this.user = this.auth.currentUser;
+			if (user) {
+				this.logged = true;
+				this.user = this.auth.currentUser;
+				this.listener.checked = true;
+				this.listener.onchange();
 
-		  } else {
-		    this.logged = false;
-		    this.user = null;
-		  }
+			} else {
+				this.logged = false;
+				this.user = null;
+				this.listener.checked = false;
+				this.listener.onchange();
+			}
 		});
 	}
 }
