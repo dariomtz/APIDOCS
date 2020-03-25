@@ -9,6 +9,7 @@ To easily run this project in your computer:
 3.Navigate to the project in the comand line and type the following comands:
 
   >firebase login
+  
   >firebase init
   
 4.Choose the Firebase project you just created.
@@ -17,13 +18,14 @@ To easily run this project in your computer:
 
 6.Run your project by typing
 
-  *firebase serve
+  >firebase serve
 
 **For collaborators of this project:**
+Using the previos list of steps:
 
-Make step 1 and 3 and skip step 2. 
+1.Make step 1 and 3 and skip step 2. 
 
-For step 4, the project "api-docs-iteso" has to appear in your projects. 
+2.For step 4, the project "api-docs-iteso" has to appear in your projects. 
 
-Then skip step 5 and do step 6.
+3.Then skip step 5 and do step 6.
 
