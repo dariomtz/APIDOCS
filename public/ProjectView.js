@@ -30,7 +30,6 @@ class ProjectView extends View{
 	}
 
 	setProjectInfo(p){
-		console.log(p);
 		this.title = p.title;
 		$('#project-title').html(this.title);
 		$('#input-title').val(this.title);
