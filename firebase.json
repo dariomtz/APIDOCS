@@ -1,7 +1,4 @@
 {
-  "database": {
-    "rules": "rules"
-  },
   "hosting": {
 
     "public": "public",
