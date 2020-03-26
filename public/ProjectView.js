@@ -124,7 +124,7 @@ class ProjectView {
 			baseURL: baseURL,
 		}
 
-		setProjectInfo(p)
+		this.setProjectInfo(p)
 
 		this.toggleEdit();
 	}
