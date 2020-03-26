@@ -1,7 +1,7 @@
-class Session {
+class Session extends Controller {
 	constructor(firebase, listener){
+		super(firebase);
 		this.auth = firebase.auth();
-		this.db = firebase.database();
 		this.observer();
 		this.user = null;
 		this.logged = false;
@@ -11,7 +11,7 @@ class Session {
 	signUp(email, password, username, photoURL = null){
 
 		return new Promise(resolve => {
-		    var usernameValidation = validateSlug(username);
+		    var usernameValidation = this.validateSlug(username);
 
 		    if (usernameValidation instanceof Error) {
 		    	resolve(usernameValidation);

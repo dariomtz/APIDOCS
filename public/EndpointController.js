@@ -1,5 +1,6 @@
-class EndpointController {
-	constructor(){
+class EndpointController extends Controller{
+	constructor(firebase){
+		super(firebase);
 
 	}
 

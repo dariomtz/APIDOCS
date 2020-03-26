@@ -1,5 +1,6 @@
-class ResourceController{
+class ResourceController extends Controller {
 	constructor(firebase, username, projectId, id){
+		super(firebase);
 		this.dbref = firebase.database().ref(username + '/projects/' + projectId + '/resources/' + id);	
 	}
 

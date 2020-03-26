@@ -1,15 +1,12 @@
-var session, locationList, username, projectId, stateOfSession;
-var userController, projectController;
-
 $(document).ready(main);
 
 function main(){
-	session = new Session(firebase, 'session');
-	locationList = window.location.pathname.toString().split('/');
-	username = null;
-	projectId = null;
-	userController = null;
-	projectController = null;
+	var session = new Session(firebase, 'session');
+	var locationList = window.location.pathname.toString().split('/');
+	var username = null;
+	var projectId = null;
+	var userController = null;
+	var projectController = null;
 
 	switch(locationList.length){
 		case 3:

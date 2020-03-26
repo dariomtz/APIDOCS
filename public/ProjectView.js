@@ -1,7 +1,7 @@
-class ProjectView {
-	constructor (user, project){ 		
-		this.user = user;
-		this.controller = project;
+class ProjectView extends View{
+	constructor (user, project){
+		super(project);
+		this.user = user;		
 
 		this.user.exists()
 		.then(exists =>{
@@ -106,14 +106,7 @@ class ProjectView {
 		const response = await this.controller.updateProject(title, id, description, baseURL);
 		
 		if (response instanceof Error) {
-			var errorAlert = createErrorAlert(response);
-
-			if($('#edit-project-alert').length){
-				$('#edit-project-alert').remove();
-			}
-			errorAlert.id = 'edit-project-alert';
-
-			$('#project-form').prepend(errorAlert);
+			this.createErrorAlert(response, 'edit-project-alert', 'project-form');
 			return;
 		}
 
@@ -144,15 +137,7 @@ class ProjectView {
 		const response = await this.controller.addResource(title, description);
 
 		if (response instanceof Error){
-			let errorAlert = createErrorAlert(response);
-
-			if($('#add-resource-alert').length){
-				$('#add-resource-alert').remove();
-			}
-			errorAlert.id = 'add-resource-alert';
-
-			$('#add-resource-form').prepend(errorAlert);
-			return;
+			this.createErrorAlert(response, 'add-resource-alert', 'add-resource-form');
 		}else{
 			//new ResourceView(response, this.user.auth);
 			this.toggleAddResource();

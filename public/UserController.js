@@ -1,6 +1,6 @@
-class UserController {
+class UserController extends Controller {
 	constructor(firebase, userName){
-		this.db = firebase.database();
+		super(firebase);
 		this.userName = userName;
 		this.auth = false;
 	}
@@ -51,7 +51,7 @@ class UserController {
 
 	addProject(title, projectId, description = '', baseURL = 'A base URL has not been set yet.'){
 		return new Promise(resolve => {
-			var projectIdValidation = validateSlug(projectId);
+			var projectIdValidation = this.validateSlug(projectId);
 			if (projectIdValidation instanceof Error) {
 				projectIdValidation.name = 'Invalid project identifier';
 				resolve(projectIdValidation);

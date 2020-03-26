@@ -1,7 +1,7 @@
-class UserView{
-	constructor(user){
-		this.user=user;
-		this.user.exists()
+class UserView extends View{
+	constructor(controller){
+		super(controller);
+		this.controller.exists()
 		.then(exists =>{
 			if(exists){
 				$('#user-page').removeClass('d-none');
@@ -19,7 +19,7 @@ class UserView{
 	}
 
 	async loadProjects(){
-		let projects = await this.user.getProjects();
+		let projects = await this.controller.getProjects();
 		let hasProjects = false;
 
 		for (const project in projects){
@@ -27,11 +27,11 @@ class UserView{
 			$('#project-list').append(this.createCard(projects[project]));
 		}
 
-		if(!hasProjects && !this.user.auth){
+		if(!hasProjects && !this.controller.auth){
 			$('#project-list').prepend(this.createNoProjectsCard());
 		}
 
-		if(this.user.auth){		
+		if(this.controller.auth){		
 			$('#project-list').prepend(this.createAddProjectCard());
 
 			$('#btn-add-project').on('click', $.proxy(this.toggleAddProject, this));
@@ -95,26 +95,12 @@ class UserView{
 		var projectId = $('#input-project-id').val();
 		var description = $('#textarea-description').val();
 
-		var response = await this.user.addProject(title, projectId, description);
+		var response = await this.controller.addProject(title, projectId, description);
 
 		if(response instanceof Error){
-			let errorAlert = this.createErrorAlert(response);
-
-			if($('#create-project-alert').length){
-				$('#create-project-alert').remove();
-			}
-			errorAlert.id = 'create-project-alert';
-
-			$('#new-project-form').prepend(errorAlert);
+			this.createErrorAlert(response, 'create-project-alert', 'new-project-form');
 			return;
 		}
-	}
-
-	createErrorAlert(error){
-		var errorAlert = document.createElement('div');
-		errorAlert.className = 'alert alert-danger';
-		errorAlert.innerHTML = error.name + ': ' + error.message;
-		return errorAlert;
 	}
 }
 

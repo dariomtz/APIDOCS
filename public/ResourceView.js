@@ -1,10 +1,9 @@
-class ResourceView{
-	constructor (r, ){
+class ResourceView extends View{
+	constructor (controller, firebase){
+		super(controller);
 		this.id = r.id;
 		this.title = r.title;
 		this.description = r.description;
-
-		this.controller = new ResourceController(firebase, this.id);
 
 		$('#resource-list').append(this.createHTML());
 		$('#dropdown-' + this.id).on('click', function(){
