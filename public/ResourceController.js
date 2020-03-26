@@ -1,7 +1,8 @@
 class ResourceController extends Controller {
 	constructor(firebase, username, projectId, id){
 		super(firebase);
-		this.dbRef = firebase.database().ref(username + '/projects/' + projectId + '/resources/' + id);	
+		this.id = id;
+		this.dbRef = this.db.ref(username + '/projects/' + projectId + '/resources/' + this.id);	
 	}
 
 	updateResource(newTitle, newDescription){
@@ -11,7 +12,11 @@ class ResourceController extends Controller {
 				description: newDescription,
 			})
 			.then(() => {
-				resolve(true);
+				resolve({
+					title: newTitle,
+					description: newDescription,
+					id: this.id,
+				});
 				return;
 			})
 			.catch(err => {

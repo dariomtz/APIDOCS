@@ -1,45 +1,33 @@
 class ResourceView extends View{
-	constructor (controller, firebase){
+	constructor (controller, r, editable){
 		super(controller);
-		this.id = r.id;
-		this.title = r.title;
-		this.description = r.description;
+		this.editable = editable;
+		this.setResource(r);
 
 		$('#resource-list').append(this.createHTML());
-		$('#dropdown-' + this.id).on('click', function(){
-			this.toggleDropdown();
-		});
+		$('#dropdown-' + this.id).on('click', $.proxy(this.toggleDropdown, this));
 
 		$('#edit-resource-title-' + this.id).val(this.title);
 		$('#edit-resource-description-' + this.id).val(this.description);
 
 		if (editable) {
-			$('#btn-add-endpoint-' + this.id).on('click', function() {
-				this.toggleAddEndpoint();
-			});
-			$('#btn-close-add-endpoint' + this.id).on('click', function() {
-				this.toggleAddEndpoint();
-			});
-			$('#cancel-save-endpoint-' + this.id).on('click', function() {
-				this.toggleAddEndpoint();
-			});
-			$('#btn-close-edit-resource-' + this.id).on('click', function(){
-				this.toggleEdit();
-			});
-			$('#edit-resource-' + this.id).on('click', function(){
-				this.toggleEdit();
-			});
-			$('#cancel-save-resource-' + this.id).on('click', function(){
-				this.toggleEdit();
-			});
-			$('#save-resource-' + this.id).on('click', function(){
-				this.updateResource();
-			});
-			
-			$('.edit').removeClass('d-none');
+			$('#btn-add-endpoint-' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
+			$('#btn-close-add-endpoint' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
+			$('#cancel-save-endpoint-' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
+
+			$('#btn-close-edit-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
+			$('#edit-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
+			$('#cancel-save-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
+			$('#save-resource-' + this.id).on('click', $.proxy(this.update, this));
 		}else{
-			$('.edit').remove();
+			$('.edit-resource').remove();
 		}
+	}
+
+	setResource(resource){
+		this.id = resource.id;
+		this.title = resource.title;
+		this.description = resource.description;
 	}
 
 	createHTML(){
@@ -70,10 +58,10 @@ class ResourceView extends View{
 		      		<div class="mx-3">\
 			      		<div class="container">\
 				      		<span id="resource-title-' + this.id + '" class="h5 mr-2">'+this.title+'</span>\
-				      		<button id="edit-resource-' + this.id + '" type="button" class="btn btn-outline-warning d-none edit mx-1">\
+				      		<button id="edit-resource-' + this.id + '" type="button" class="btn btn-outline-warning edit-resource mx-1">\
 				      			Edit\
 				      		</button>\
-							<button id="delete-resource-' + this.id + '" type="button" class="btn btn-outline-danger d-none edit mx-1">\
+							<button id="delete-resource-' + this.id + '" type="button" class="btn btn-outline-danger edit-resource mx-1">\
 								Delete\
 							</button>\
 		      			</div>\
@@ -91,7 +79,7 @@ class ResourceView extends View{
 
 		  			'</div>' +
 
-		      		'<div id="add-endpoint-' + this.id + '" class="m-0 edit d-none d-flex flex-column justify-content-center"> \
+		      		'<div id="add-endpoint-' + this.id + '" class="m-0 edit-resource d-flex flex-column justify-content-center"> \
 		  			\
 						<div id="add-endpoint-form-' + this.id + '" class="d-none container-fluid my-2">\
 							<hr>\
@@ -161,26 +149,21 @@ class ResourceView extends View{
 	async update(){
 		let title = $('#edit-resource-title-' + this.id).val();
 		let description = $('#edit-resource-description-' + this.id).val();
-
-		const response = await project.updateResource(this.id, title, description);
-
+		
+		const response = await this.controller.updateResource(title, description);
+		
 		if (response instanceof Error){
-			var errorAlert = createErrorAlert(response);
-
-			if($('#edit-resource-' + this.id + '-alert').length){
-				$('#edit-resource-' + this.id + '-alert').remove();
-			}
-			errorAlert.id = '#edit-resource-' + this.id + '-alert';
-
-			$('#edit-resource-form-' + this.id).prepend(errorAlert);
+			createErrorAlert(response, 'edit-resource-' + this.id + 'alert', 'edit-resource-form-' + this.id);
 			return;
 		}
 
-		$('#resource-title-' + this.id).html(title);
-		$('#resource-description-' + this.id).html(title);
-		
-		$('#edit-resource-title-' + this.id).val(title);
-		$('#edit-resource-description-' + this.id).val(description);
+		this.setResource(response);
+
+		$('#resource-title-' + this.id).html(this.title);
+		$('#resource-description-' + this.id).html(this.description);
+
+		$('#edit-resource-title-' + this.id).val(this.title);
+		$('#edit-resource-description-' + this.id).val(this.description);
 		
 		this.toggleEdit();
 	}
@@ -189,7 +172,6 @@ class ResourceView extends View{
 		$('#add-endpoint-form-' + this.id).toggleClass('d-none');
 		$('#btn-add-endpoint-' + this.id).toggleClass('d-none');
 		$('#add-endpoint-method-' + this.id).val('');
-		//$('#add-resource-description').val('');
 		$('#add-endpoint-method-' + this.id).val('');
 	}
 
