@@ -24,9 +24,19 @@ To easily run this project in your computer:
 
 Using the previos list of steps:
 
-1.Make step 1 and 3 and skip step 2. 
+1.Make step 1. 
 
-2.For step 4, the project "api-docs-iteso" has to appear in your projects. 
+2.Run the following commands
 
-3.Then skip step 5 and do step 6.
+  >firebase login
+  >
+  >cd functions
+  >
+  >npm install
+  >
+  >cd ..
+
+3.Skip steps 2 to 5. 
+
+4.Do step 6.
 
