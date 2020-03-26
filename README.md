@@ -26,7 +26,7 @@ Using the previos list of steps:
 
 1.Make step 1. 
 
-2.Run the following commands
+2.Navigate to the project in the comand line and type the following comands:
 
   >firebase login
   >
