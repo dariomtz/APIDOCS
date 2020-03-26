@@ -1,7 +1,7 @@
 function userPage(){
 	//identify if the user exists
 
-	user.exists()
+	userController.exists()
 	.then(exists =>{
 		if(exists){
 			$('#user-page').removeClass('d-none');
@@ -25,7 +25,7 @@ function pressKeyUser(e){
 }
 
 async function loadProjects(){
-	var projects = await user.getProjects();
+	var projects = await userController.getProjects();
 	var hasProjects = false;
 
 	for (const project in projects){
@@ -33,11 +33,11 @@ async function loadProjects(){
 		$('#project-list').append(createCard(projects[project]));
 	}
 
-	if(!hasProjects && !user.auth){
+	if(!hasProjects && !userController.auth){
 		$('#project-list').prepend(createNoProjectsCard());
 	}
 
-	if(user.auth){
+	if(userController.auth){
 		if(!$('#add-project-card').length){
 			$('#project-list').prepend(createAddProjectCard());
 		}
@@ -64,7 +64,7 @@ async function addProject(){
 	var projectId = $('#input-project-id').val();
 	var description = $('#textarea-description').val();
 
-	var response = await user.addProject(title, projectId, description);
+	var response = await userController.addProject(title, projectId, description);
 
 	if(response instanceof Error){
 		let errorAlert = createErrorAlert(response);

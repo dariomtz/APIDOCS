@@ -35,6 +35,12 @@ class ProjectController {
 	updateProject(title = null, projectId = null, description = null, baseURL = null){
 		return new Promise(resolve => {
 			if (projectId && projectId !== this.id) {
+				let validation = this.validateSlug(projectId);
+				if (validation instanceof Error) {
+					validation.name = 'Invalid Project Id'
+					resolve(validation);
+					return;
+				}
 				this.db.ref(this.owner + '/projects').child(projectId).once('value')
 				.then(snap => {
 					if (snap.exists()) {
@@ -129,6 +135,32 @@ class ProjectController {
 				return;
 			});
 		});
+	}
+
+	validateSlug(slug){
+		if(typeof slug !== "string"  || slug === ''){
+	    	var e = new Error('This field must be a non empty string with only lower case letters, numbers and hyphens.');
+			return e;
+		}
+		
+		var validCharacters = '1234567890qwertyuiopasdfghjklzxcvbnm-';
+
+		for (var i = 0; i < slug.length; i++) {
+			var flag = false;
+
+			for (var j = 0; j < validCharacters.length; j++) {
+				if(slug[i] == validCharacters[j]){
+					flag = true
+				}
+			}
+
+			if (!flag) {
+				var e = new Error('This field must have only lower case letters, numbers and hyphens.');
+				return e;
+			}
+		}
+
+		return true;
 	}
 
 }

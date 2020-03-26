@@ -1,4 +1,5 @@
-var session, locationList, username, projectId, user, project, stateOfSession;
+var session, locationList, username, projectId, stateOfSession;
+var sessionController, userController, projectController;
 
 $(document).ready(main);
 
@@ -7,8 +8,8 @@ function main(){
 	locationList = window.location.pathname.toString().split('/');
 	username = null;
 	projectId = null;
-	user = null;
-	project = null;
+	userController = null;
+	projectController = null;
 
 	switch(locationList.length){
 		case 3:
@@ -19,11 +20,11 @@ function main(){
 	}
 
 	if(username){
-		user = new User(firebase, username);
+		userController = new User(firebase, username);
 	}
 
 	if(projectId){
-		project = new ProjectController(firebase, username, projectId);
+		projectController = new ProjectController(firebase, username, projectId);
 	}
 	
 	stateOfSession = document.getElementById('session');
@@ -33,15 +34,15 @@ function main(){
 			$('#btn-sign-in').addClass("d-none");
 			$('#btn-sign-up').addClass("d-none");
 
-			if(user){
-				user.auth = (session.user.displayName === user.userName);
+			if(userController){
+				userController.auth = (session.user.displayName === userController.userName);
 			}
 			
 			$('#navbar-brand').attr("href", '/'+ session.user.displayName);
 		}else{
 
-			if(user){
-				user.auth = false;
+			if(userController){
+				userController.auth = false;
 			}
 
 			$('#btn-sign-in').removeClass("d-none");
@@ -51,9 +52,9 @@ function main(){
 
 		$('#navbar-spinner').addClass('d-none');
 		
-		if(project){
-			new ProjectView(user, project);
-		}else if(user){
+		if(projectController){
+			new ProjectView(userController, projectController);
+		}else if(userController){
 			userPage();
 		}
 	}

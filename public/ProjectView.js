@@ -1,5 +1,5 @@
 class ProjectView {
-	constructor (user, project){ 
+	constructor (user, project){ 		
 		this.user = user;
 		this.controller = project;
 
@@ -30,21 +30,22 @@ class ProjectView {
 	}
 
 	setProjectInfo(p){
+		console.log(p);
 		this.title = p.title;
 		$('#project-title').html(this.title);
 		$('#input-title').val(this.title);
 	
 		this.description = p.description;
 		$('#project-description').html(this.description);
-		$('#input-description').val(this.description);
+		$('#textarea-description').val(this.description);
 	
 		this.baseURL = p.baseURL;
-		$('#project-baseURL').html(this.baseURL);
+		$('#base-url').html(this.baseURL);
 		$('#input-baseURL').val(this.baseURL);
 
 		this.id = p.projectId;
 		$('#project-id').html(this.id);
-		$('#input-id').val(this.id);
+		$('#input-project-id').val(this.id);
 	}
 
 	async load(){
@@ -57,26 +58,26 @@ class ProjectView {
 		for (const resource in p.resources){
 			let r = p.resources[resource];
 			hasResources = true;
-			new ResourceView(r, p.projectId, this.user);
+			//new ResourceView(r, p.projectId, this.user);
 		}
 
-		if(!hasResources && !user.auth){
+		if(!hasResources && !this.user.auth){
 			$('#resource-list').prepend(createNoResourcesCard());
 		}
 
-		if(user.auth){
-			$('#edit-project').on('click', this.toggleEdit);
-			$('#btn-close-project-form').on('click', this.toggleEdit);
-			$('#save-project').on('click', this.update);
+		if(this.user.auth){
+			$('#edit-project').on('click', $.proxy(this.toggleEdit, this));
+			$('#btn-close-project-form').on('click', $.proxy(this.toggleEdit, this));
+			$('#save-project').on('click', $.proxy(this.update, this));
 
-			$('#input-title').on('keypress', this.pressKey);
-			$('#input-project-id').on('keypress', this.pressKey);
-			$('#input-baseURL').on('keypress', this.pressKey);
+			$('#input-title').on('keypress', $.proxy(this.pressKey, this));
+			$('#input-project-id').on('keypress', $.proxy(this.pressKey, this));
+			$('#input-baseURL').on('keypress', $.proxy(this.pressKey, this));
 
-			$('#btn-add-resource').on('click', this.toggleAddResource);
-			$('#btn-close-add-resource').on('click', this.toggleAddResource);
-			$('#cancel-save-resource').on('click', this.toggleAddResource);
-			$('#save-resource').on('click', this.addResource);
+			$('#btn-add-resource').on('click', $.proxy(this.toggleAddResource, this));
+			$('#btn-close-add-resource').on('click', $.proxy(this.toggleAddResource, this));
+			$('#cancel-save-resource').on('click', $.proxy(this.toggleAddResource, this));
+			$('#save-resource').on('click', $.proxy(this.addResource, this));
 
 			$('.edit').removeClass('d-none');
 		}else{
@@ -102,8 +103,8 @@ class ProjectView {
 		let baseURL = $('#input-baseURL').val();
 		let description = $('#textarea-description').val();
 		
-		const response = await project.updateProject(title, id, description, baseURL);
-
+		const response = await this.controller.updateProject(title, id, description, baseURL);
+		
 		if (response instanceof Error) {
 			var errorAlert = createErrorAlert(response);
 
@@ -153,7 +154,7 @@ class ProjectView {
 			$('#add-resource-form').prepend(errorAlert);
 			return;
 		}else{
-			new ResourceView(response, this.user.auth);
+			//new ResourceView(response, this.user.auth);
 			this.toggleAddResource();
 		}
 
