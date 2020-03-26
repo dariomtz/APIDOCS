@@ -57,7 +57,7 @@ class ProjectView extends View{
 		for (const resource in p.resources){
 			let r = p.resources[resource];
 			hasResources = true;
-			//new ResourceView(r, p.projectId, this.user);
+			this.creteResource(r);
 		}
 
 		if(!hasResources && !this.user.auth){
@@ -138,11 +138,18 @@ class ProjectView extends View{
 		if (response instanceof Error){
 			this.createErrorAlert(response, 'add-resource-alert', 'add-resource-form');
 		}else{
-			//new ResourceView(response, this.user.auth);
+			this.creteResource(response);
 			this.toggleAddResource();
 		}
 
 		return;
+	}
+
+	creteResource(resource){
+		let resourceController = new ResourceController(
+			this.controller.firebase, this.controller.owner, this.controller.id, resource.id);
+		
+		new ResourceView(resourceController, resource, this.user.auth);
 	}
 
 	createNoResourcesCard(){
