@@ -1,4 +1,4 @@
-class User {
+class UserController {
 	constructor(firebase, userName){
 		this.db = firebase.database();
 		this.userName = userName;
