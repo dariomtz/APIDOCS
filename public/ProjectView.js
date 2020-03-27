@@ -64,9 +64,9 @@ class ProjectView extends View{
 			$('#resource-list').prepend(createNoResourcesCard());
 		}
 
-		if(this.user.auth){
-			$('#btn-copy-link-clipboard').on('click', $.proxy(this.copyProjectToClipboard , this));
+		$('#btn-copy-link-clipboard').on('click', $.proxy(this.copyProjectToClipboard , this));
 
+		if(this.user.auth){
 			$('#edit-project').on('click', $.proxy(this.toggleEdit, this));
 			$('#btn-close-project-form').on('click', $.proxy(this.toggleEdit, this));
 			$('#cancel-project-changes').on('click', $.proxy(this.toggleEdit, this));
@@ -171,8 +171,9 @@ class ProjectView extends View{
   	document.body.appendChild(el);
   	el.select();
   	document.execCommand('copy');
-  	document.body.removeChild(el);
+		document.body.removeChild(el);
 	}
+
 	clearEditProjectForm(){
 		$('#project-form :text').each((i, val)=>{
 			$(val).val('');
