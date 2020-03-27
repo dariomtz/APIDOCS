@@ -36,6 +36,7 @@ class UserView extends View{
 
 			$('#btn-add-project').on('click', $.proxy(this.toggleAddProject, this));
 			$('#btn-close').on('click', $.proxy(this.toggleAddProject, this));
+			$('#btn-cancel-create-project').on('click', $.proxy(this.toggleAddProject, this));
 			$('#btn-create-project').on('click', $.proxy(this.addProject, this));
 
 			$('#input-title').on('keypress', $.proxy(this.pressKey, this));
@@ -85,6 +86,7 @@ class UserView extends View{
 	}
 
 	toggleAddProject(){
+		this.clearNewProjectForm();
 		$('#user-page').toggleClass('d-none');
 		$('#add-project-form').toggleClass('d-none');
 		$('#input-title').focus();
@@ -101,6 +103,13 @@ class UserView extends View{
 			this.createErrorAlert(response, 'create-project-alert', 'new-project-form');
 			return;
 		}
+	}
+	
+	clearNewProjectForm(){
+		$('#new-project-form :text').each((i, val) => {
+			$(val).val('');
+		});
+		$('#new-project-form #textarea-description').val('');
 	}
 }
 

@@ -69,6 +69,7 @@ class ProjectView extends View{
 
 			$('#edit-project').on('click', $.proxy(this.toggleEdit, this));
 			$('#btn-close-project-form').on('click', $.proxy(this.toggleEdit, this));
+			$('#cancel-project-changes').on('click', $.proxy(this.toggleEdit, this));
 			$('#save-project').on('click', $.proxy(this.update, this));
 
 			$('#input-title').on('keypress', $.proxy(this.pressKey, this));
@@ -87,6 +88,7 @@ class ProjectView extends View{
 	}
 
 	toggleEdit(){
+		this.clearEditProjectForm();
 		$('#project-info').toggleClass('d-none');
 		$('#project-form').toggleClass('d-none');
 		$('#input-title').focus();
@@ -170,5 +172,13 @@ class ProjectView extends View{
   	el.select();
   	document.execCommand('copy');
   	document.body.removeChild(el);
+	
+	clearEditProjectForm(){
+		$('#project-form :text').each((i, val)=>{
+			$(val).val('');
+		});
+		$('#project-form #textarea-description').each((i, val)=>{
+			$(val).val('');
+		});
 	}
 }
