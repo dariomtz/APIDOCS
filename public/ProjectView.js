@@ -172,7 +172,7 @@ class ProjectView extends View{
   	el.select();
   	document.execCommand('copy');
   	document.body.removeChild(el);
-	
+	}
 	clearEditProjectForm(){
 		$('#project-form :text').each((i, val)=>{
 			$(val).val('');
