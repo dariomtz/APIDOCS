@@ -65,6 +65,8 @@ class ProjectView extends View{
 		}
 
 		if(this.user.auth){
+			$('#btn-copy-link-clipboard').on('click', $.proxy(this.copyProjectToClipboard , this));
+
 			$('#edit-project').on('click', $.proxy(this.toggleEdit, this));
 			$('#btn-close-project-form').on('click', $.proxy(this.toggleEdit, this));
 			$('#save-project').on('click', $.proxy(this.update, this));
@@ -159,5 +161,14 @@ class ProjectView extends View{
 	    		'<p class="card-text">You can come back later to see if the owner adds something new.</p>' +
 	  		'</div>' +
 		'</div>';
+	}
+
+	copyProjectToClipboard(){
+		const el = document.createElement('textarea');
+  	el.value = window.location.href;
+  	document.body.appendChild(el);
+  	el.select();
+  	document.execCommand('copy');
+  	document.body.removeChild(el);
 	}
 }
