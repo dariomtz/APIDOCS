@@ -31,11 +31,15 @@ function main(){
 			$('#btn-sign-in').addClass("d-none");
 			$('#btn-sign-up').addClass("d-none");
 
+			$('#home-container').removeClass("d-none");
+			$('#username-display').text(session.user.displayName);
+			$('#btn-home').on('click', () =>{
+				window.location.href = "/" + session.user.displayName;
+			})
+
 			if(userController){
 				userController.auth = (session.user.displayName === userController.userName);
 			}
-			
-			$('#navbar-brand').attr("href", '/'+ session.user.displayName);
 		}else{
 
 			if(userController){
@@ -44,7 +48,9 @@ function main(){
 
 			$('#btn-sign-in').removeClass("d-none");
 			$('#btn-sign-up').removeClass("d-none");
+
 			$('#btn-sign-out').addClass("d-none");
+			$('#home-container').addClass("d-none");
 		}
 
 		$('#navbar-spinner').addClass('d-none');
