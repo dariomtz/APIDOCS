@@ -9,6 +9,7 @@ function signIn(){
 	$('#sign-in-password').on('keypress', pressKey);
 }
 
+
 function pressKey(e){
 	if(e.which === 13){
 		submitSignInForm();
