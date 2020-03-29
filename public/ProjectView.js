@@ -167,11 +167,13 @@ class ProjectView extends View{
 
 	copyProjectToClipboard(){
 		const el = document.createElement('textarea');
-  	el.value = window.location.href;
-  	document.body.appendChild(el);
-  	el.select();
-  	document.execCommand('copy');
+		el.value = window.location.href;
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
 		document.body.removeChild(el);
+		$('#btn-copy-link-clipboard').removeClass('btn-light');
+		$('#btn-copy-link-clipboard').addClass('btn-outline-success');
 	}
 
 	clearEditProjectForm(){
