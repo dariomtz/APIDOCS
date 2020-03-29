@@ -63,7 +63,7 @@ function main(){
 	});
 
 	if (locationList[1] === 'signup') {
-		signUp();
+		new SignUpView(session);
 	}else if(locationList[1] === 'signin'){
 		new SignInView(session);
 	}
