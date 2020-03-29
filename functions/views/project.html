@@ -1,17 +1,15 @@
 <div id="project-page" class="p-5 d-none container ">
 	<div id="project-info" class="pb-2">
 		<h1 id="project-title"></h1>
-		<span id="project-id" class="h6 text-muted"></span>
-
-	    <hr>
-
-	    <p id="project-description" class="text-justify"></p>
-	            
-	    <h6>Author @<span>{{ userId }}</span></h6>
-	  
-	    <h6>Base URL: <span id="base-url" class="font-italic"></span></h6>
-
-	    <div class="d-flex justify-content-end">
+		<div class="d-flex justify-content-between">
+			<div class= "d-inline-block p-2"><span id="project-id" class="h6 text-muted"></span></div>
+			<button id="btn-copy-link-clipboard" type="button" class="btn btn-light">&#x1f4cb Copy project link to clipboard</button> 
+		</div> 
+		<hr>
+	  <p id="project-description" class="text-justify"></p>       
+	  <h6>Author @<span>{{ userId }}</span></h6>
+		<h6>Base URL: <span id="base-url" class="font-italic"></span></h6>
+	  <div class="d-flex justify-content-end">
 			<button id="edit-project" type="button" class="btn btn-outline-warning d-none edit mx-1">Edit</button>
 			<button id="delete-project" type="button" class="btn btn-outline-danger d-none edit mx-1">Delete</button>
 		</div>
