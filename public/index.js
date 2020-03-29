@@ -65,6 +65,6 @@ function main(){
 	if (locationList[1] === 'signup') {
 		signUp();
 	}else if(locationList[1] === 'signin'){
-		signIn();
+		new SignInView(session);
 	}
 }
