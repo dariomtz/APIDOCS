@@ -6,12 +6,7 @@
 </head>
 <body>
 	<nav class="navbar navbar-expand-lg navbar-light bg-light shadow fixed-top">
-		<div id="home-container" class="d-none">
-			<div id="btn-home"class="d-flex flex-row aling-items-center btn btn-light" >
-				<img class="img-fluid mx-1" src="/UsernameIcon.svg" alt="UserIcon">
-				<h2 id="username-display"class="mx-1 pt-1">Home</h2>
-			</div>
-		</div>
+		<a id="navbar-brand" class="navbar-brand mx-2 text-primary" href="/">API Docs</a>
 	  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
 	    <span class="navbar-toggler-icon"></span>
 	  </button>
@@ -24,7 +19,13 @@
 	    <div class="form-inline my-2 my-lg-0">
 	    	<div id="navbar-spinner" class="spinner-border spinner-border-sm text-primary mx-5" role="status">
 	    	  <span class="sr-only">Loading...</span>
-	    	</div>
+			</div>
+			<div id="home-container" class="d-none">
+				<div id="btn-home"class="btn btn-light" >
+					<img class="img-fluid mx-1 d-inline-block" width="25" height="25" src="/UsernameIcon.svg" alt="UserIcon">
+					<div class="mx-1 d-inline-block align-middle"><span id="username-display" class="h5"></span></div>
+				</div>
+			</div>
 			<a id="btn-sign-in" class="btn btn-outline-primary my-2 my-sm-0 mx-1 d-none" href="/signin">Sign in</a>
 			<a id="btn-sign-up" class="btn btn-outline-primary my-2 my-sm-0 mx-1 d-none" href="/signup">Sign up</a>
 			<button id="btn-sign-out" class="btn btn-outline-danger my-2 my-sm-0 mx-1 d-none">Sign out</button>
