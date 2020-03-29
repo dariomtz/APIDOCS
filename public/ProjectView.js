@@ -177,11 +177,9 @@ class ProjectView extends View{
 	}
 
 	clearEditProjectForm(){
-		$('#project-form :text').each((i, val)=>{
-			$(val).val('');
-		});
-		$('#project-form #textarea-description').each((i, val)=>{
-			$(val).val('');
-		});
+		$('#input-title').val(this.title);
+		$('#input-project-id').val(this.id);
+		$('#textarea-description').val(this.description);
+		$('#input-baseURL').val(this.baseURL);
 	}
 }
