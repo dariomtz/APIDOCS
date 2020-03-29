@@ -27,6 +27,7 @@ function main(){
 	stateOfSession = document.getElementById('session');
 	stateOfSession.onchange = () => {
 		if (stateOfSession.checked){
+		
 			$('#btn-sign-out').removeClass("d-none");
 			$('#btn-sign-in').addClass("d-none");
 			$('#btn-sign-up').addClass("d-none");
@@ -34,8 +35,11 @@ function main(){
 			if(userController){
 				userController.auth = (session.user.displayName === userController.userName);
 			}
-			
-			$('#navbar-brand').attr("href", '/'+ session.user.displayName);
+			let userUrl = "/" + session.user.displayName;	
+			$('#navbar-brand').attr("href", userUrl);
+			if(locationList[1] === ""){
+				window.location.href = userUrl;
+			}
 		}else{
 
 			if(userController){
