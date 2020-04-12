@@ -16,29 +16,15 @@ class EndpointView extends View{
 		}
 	}
 
-	/**
-	 * When we tal about a resource we mean an object of this type:
-	 * {
-			id: push.key,
-			method: method,
-			summary: summary,
-			description: description,
-			uriPath: uriPath,
-			requestBody: requestBody,
-			responseBody: responseBody,
-			responseStatus: responseStatus,
-		}
-
-		Set makes all this attributes available in this object.
-		Ex:
-			this.id;
-			this.method;
-			etc.
-
-		This documentation can be deleted when this method is done.
-	 */
 	setEndpoint(endpoint){
-
+		this.id = endpoint.id;
+		this.method = endpoint.method;
+		this.summary = endpoint.summary;
+		this.description = endpoint.description;
+		this.uriPath = endpoint.uriPath;
+		this.requestBody = endpoint.requestBody;
+		this.responseBody = endpoint.responseBody;
+		this.responseStatus = endpoint.responseStatus;
 	}
 
 	/** 
