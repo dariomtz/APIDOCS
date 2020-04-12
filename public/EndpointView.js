@@ -21,7 +21,7 @@ class EndpointView extends View{
 	 * {
 			id: push.key,
 			method: method,
-			sumary: sumary,
+			summary: summary,
 			description: description,
 			uriPath: uriPath,
 			requestBody: requestBody,
