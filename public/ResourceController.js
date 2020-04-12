@@ -43,8 +43,7 @@ class ResourceController extends Controller {
 	addEndpoint(method, sumary, description, uriPath, requestBody, responseBody, responseStatus){
 		return new Promise(resolve => {
 			let push = this.dbRef.child('/endpoints').push()
-
-			push.set({
+			let endpoint = {
 				id: push.key,
 				method: method,
 				sumary: sumary,
@@ -53,9 +52,11 @@ class ResourceController extends Controller {
 				requestBody: requestBody,
 				responseBody: responseBody,
 				responseStatus: responseStatus,
-			})
+			};
+
+			push.set(endpoint)
 			.then(() => {
-				resolve(true);
+				resolve(endpoint);
 				return;
 			})
 			.catch(err => {
