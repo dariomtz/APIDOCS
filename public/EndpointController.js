@@ -1,12 +1,15 @@
 class EndpointController extends Controller{
-	constructor(firebase){
+	constructor(firebase, username, projectId, resourceId, id){
 		super(firebase);
-
+		this.id = id;
+		this.dbRef = this.db.ref(
+			username + '/projects/' + projectId + '/resources/' + resourceId + '/endpoints/' + this.id);
 	}
 
-	updateEndpoint(resourceId, endPointId, method, sumary, description, uriPath, requestBody, responseBody, responseStatus){
+	updateEndpoint(method, sumary, description, uriPath, requestBody, responseBody, responseStatus){
 		return new Promise(resolve => {
-			this.resourceRef.child(resourceId + '/endpoints/' + endPointId).update({
+
+			let newEndpoint = {
 				method: method,
 				sumary: sumary,
 				description: description,
@@ -14,9 +17,11 @@ class EndpointController extends Controller{
 				requestBody: requestBody,
 				responseBody: responseBody,
 				responseStatus: responseStatus,
-			})
+			};
+
+			this.dbRef.update(newEndpoint)
 			.then(() => {
-				resolve(true);
+				resolve(newEndpoint);
 				return;
 			})
 			.catch(err => {
@@ -26,9 +31,9 @@ class EndpointController extends Controller{
 		});
 	}
 
-	deleteEndpoint(resource, endPointId){
+	deleteEndpoint(){
 		return new Promise(resolve => {
-			this.resourceRef.child(resourceId + '/endpoints' + endPointId).remove()
+			this.dbRef.remove()
 			.then(() => {
 				resolve(true);
 				return;
