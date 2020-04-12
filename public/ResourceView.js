@@ -143,6 +143,8 @@ class ResourceView extends View{
 	toggleEdit(){
 		$('#edit-resource-form-' + this.id).toggleClass('d-none');
 		$('#' + this.id).toggleClass('d-none');
+		$('#edit-resource-title-' + this.id ).val(this.title);
+		$('#edit-resource-description-' + this.id ).val(this.description);
 		$('#edit-resource-title-' + this.id).focus();
 	}
 
