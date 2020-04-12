@@ -102,12 +102,12 @@ class ResourceView extends View{
 							</div>\
 							<div class="my-3">\
 								<h4>URI Path</h4>\
-								<input id="add-endpoint-path-' + this.id + '" class="form-control" type="text" placeholder="Sumary" maxlength="10" size="80">\
+								<input id="add-endpoint-path-' + this.id + '" class="form-control" type="text" placeholder="Path" maxlength="10" size="80">\
 							</div>\
 							\
 							<div class="my-3">\
-								<h4>Sumary</h4>\
-								<input id="add-endpoint-sumary-' + this.id + '" class="form-control" type="text" placeholder="Sumary" maxlength="10" size="80">\
+								<h4>Summary</h4>\
+								<input id="add-endpoint-summary-' + this.id + '" class="form-control" type="text" placeholder="Summary" maxlength="10" size="80">\
 							</div>\
 						    \
 						    <div class="my-3">\
@@ -180,7 +180,7 @@ class ResourceView extends View{
 
 	addEndpoint(){
 		let method = $('#add-endpoint-method-' + this.id).val();
-		let sumary = $('#add-endpoint-sumary-' + this.id).val();
+		let summary = $('#add-endpoint-summary-' + this.id).val();
 		let description = $('#add-endpoint-description-' + this.id).val();
 		let uriPath = $('#add-endpoint-path-' + this.id).val();
 		let requestBody = $('#add-endpoint-request-' + this.id).val();
@@ -188,7 +188,7 @@ class ResourceView extends View{
 		let responseStatus = $('#add-endpoint-code-' + this.id).val();
 		
 		let response = this.controller.addEndpoint(
-			method, sumary, description, uriPath, requestBody, responseBody, responseStatus);
+			method, summary, description, uriPath, requestBody, responseBody, responseStatus);
 
 		if (response instanceof Error){
 			this.createErrorAlert(response);

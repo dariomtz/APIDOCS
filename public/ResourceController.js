@@ -40,13 +40,13 @@ class ResourceController extends Controller {
 		});
 	}
 
-	addEndpoint(method, sumary, description, uriPath, requestBody, responseBody, responseStatus){
+	addEndpoint(method, summary, description, uriPath, requestBody, responseBody, responseStatus){
 		return new Promise(resolve => {
 			let push = this.dbRef.child('/endpoints').push()
 			let endpoint = {
 				id: push.key,
 				method: method,
-				sumary: sumary,
+				summary: summary,
 				description: description,
 				uriPath: uriPath,
 				requestBody: requestBody,
