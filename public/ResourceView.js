@@ -199,7 +199,8 @@ class ResourceView extends View{
 	}
 
 	createEndpoint(endpoint){
-
+		let controller = new EndpointController(this.controller.firebase, this.controller.dbRef, endpoint.id);
+		new EndpointView(controller, endpoint, this.id, this.editable);
 	}
 
 	toggleDropdown(){
