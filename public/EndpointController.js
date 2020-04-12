@@ -6,12 +6,12 @@ class EndpointController extends Controller{
 			username + '/projects/' + projectId + '/resources/' + resourceId + '/endpoints/' + this.id);
 	}
 
-	updateEndpoint(method, sumary, description, uriPath, requestBody, responseBody, responseStatus){
+	updateEndpoint(method, summary, description, uriPath, requestBody, responseBody, responseStatus){
 		return new Promise(resolve => {
 
 			let newEndpoint = {
 				method: method,
-				sumary: sumary,
+				summary: summary,
 				description: description,
 				uriPath: uriPath,
 				requestBody: requestBody,
