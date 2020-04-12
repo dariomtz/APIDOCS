@@ -14,6 +14,7 @@ class ResourceView extends View{
 			$('#btn-add-endpoint-' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
 			$('#btn-close-add-endpoint' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
 			$('#cancel-save-endpoint-' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
+			$('#save-endpoint-'+ this.id).on('click', $.proxy(this.addEndpoint, this));
 
 			$('#btn-close-edit-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
 			$('#edit-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
@@ -178,8 +179,15 @@ class ResourceView extends View{
 	}
 
 	addEndpoint(){
+		let endpoint = {};
 
+		this.toggleAddEndpoint();
+		this.createEndpoint(endpoint);
 		return;
+	}
+
+	createEndpoint(endpoint){
+
 	}
 
 	toggleDropdown(){
