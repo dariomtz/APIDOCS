@@ -14,6 +14,7 @@ class ResourceView extends View{
 			$('#btn-add-endpoint-' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
 			$('#btn-close-add-endpoint' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
 			$('#cancel-save-endpoint-' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
+			$('#save-endpoint-'+ this.id).on('click', $.proxy(this.addEndpoint, this));
 
 			$('#btn-close-edit-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
 			$('#edit-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
@@ -178,8 +179,27 @@ class ResourceView extends View{
 	}
 
 	addEndpoint(){
+		let method = $('#add-endpoint-method-' + this.id).val();
+		let sumary = $('#add-endpoint-sumary-' + this.id).val();
+		let description = $('#add-endpoint-description-' + this.id).val();
+		let uriPath = $('#add-endpoint-path-' + this.id).val();
+		let requestBody = $('#add-endpoint-request-' + this.id).val();
+		let responseBody = $('#add-endpoint-response-' + this.id).val();
+		let responseStatus = $('#add-endpoint-code-' + this.id).val();
+		
+		let response = this.controller.addEndpoint(
+			method, sumary, description, uriPath, requestBody, responseBody, responseStatus);
 
-		return;
+		if (response instanceof Error){
+			this.createErrorAlert(response);
+		}else{
+			this.createEndpoint(response);
+			this.toggleAddEndpoint();
+		}
+	}
+
+	createEndpoint(endpoint){
+
 	}
 
 	toggleDropdown(){
