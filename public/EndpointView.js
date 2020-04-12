@@ -32,7 +32,13 @@ class EndpointView extends View{
 	 * The values of the endpoint must be set before this method is used.
 	 * */
 	populateEndpoint(){
-			
+		$('#endpoint-method-' + this.id).html(this.method);
+		$('#endpoint-summary-' + this.id).html(this.summary);
+		$('#endpoint-description-' + this.id).html(this.description);
+		$('#endpoint-uriPath-' + this.id).html(this.uriPath);
+		$('#endpoint-req-body-' + this.id).html(this.requestBody);
+		$('#endpoint-res-body-' + this.id).html(this.responseBody);
+		$('#endpoint-res-status-' + this.id).html(this.responseStatus);
 	}
 
 	createHTML(){
