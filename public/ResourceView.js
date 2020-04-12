@@ -179,11 +179,23 @@ class ResourceView extends View{
 	}
 
 	addEndpoint(){
-		let endpoint = {};
+		let method = $('#add-endpoint-method-' + this.id).val();
+		let sumary = $('#add-endpoint-sumary-' + this.id).val();
+		let description = $('#add-endpoint-description-' + this.id).val();
+		let uriPath = $('#add-endpoint-path-' + this.id).val();
+		let requestBody = $('#add-endpoint-request-' + this.id).val();
+		let responseBody = $('#add-endpoint-response-' + this.id).val();
+		let responseStatus = $('#add-endpoint-code-' + this.id).val();
+		
+		let response = this.controller.addEndpoint(
+			method, sumary, description, uriPath, requestBody, responseBody, responseStatus);
 
-		this.toggleAddEndpoint();
-		this.createEndpoint(endpoint);
-		return;
+		if (response instanceof Error){
+			this.createErrorAlert(response);
+		}else{
+			this.createEndpoint(response);
+			this.toggleAddEndpoint();
+		}
 	}
 
 	createEndpoint(endpoint){
