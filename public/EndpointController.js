@@ -1,9 +1,8 @@
 class EndpointController extends Controller{
-	constructor(firebase, username, projectId, resourceId, id){
+	constructor(firebase, resourceRef, id){
 		super(firebase);
 		this.id = id;
-		this.dbRef = this.db.ref(
-			username + '/projects/' + projectId + '/resources/' + resourceId + '/endpoints/' + this.id);
+		this.dbRef = resourceRef.child('endpoints/' + id);
 	}
 
 	updateEndpoint(method, summary, description, uriPath, requestBody, responseBody, responseStatus){

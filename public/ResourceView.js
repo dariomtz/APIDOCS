@@ -10,6 +10,12 @@ class ResourceView extends View{
 		$('#edit-resource-title-' + this.id).val(this.title);
 		$('#edit-resource-description-' + this.id).val(this.description);
 
+		for (const endpoint in r.endpoints) {
+			let e = r.endpoints[endpoint];
+			console.log(e);
+			this.createEndpoint(e);
+		}
+
 		if (editable) {
 			$('#btn-add-endpoint-' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
 			$('#btn-close-add-endpoint' + this.id).on('click', $.proxy(this.toggleAddEndpoint, this));
@@ -102,29 +108,29 @@ class ResourceView extends View{
 							</div>\
 							<div class="my-3">\
 								<h4>URI Path</h4>\
-								<input id="add-endpoint-path-' + this.id + '" class="form-control" type="text" placeholder="Path" maxlength="10" size="80">\
+								<input id="add-endpoint-path-' + this.id + '" class="form-control" type="text" placeholder="Path" maxlength="30" size="80">\
 							</div>\
 							\
 							<div class="my-3">\
 								<h4>Summary</h4>\
-								<input id="add-endpoint-summary-' + this.id + '" class="form-control" type="text" placeholder="Summary" maxlength="10" size="80">\
+								<input id="add-endpoint-summary-' + this.id + '" class="form-control" type="text" placeholder="Summary" maxlength="50" size="80">\
 							</div>\
 						    \
 						    <div class="my-3">\
 								<h4>Description</h4>\
-					        	<textarea id="add-endpoint-description" class="form-control rounded" id="input-description" placeholder="Description" rows="2"></textarea>\
+					        	<textarea id="add-endpoint-description-' + this.id + '" class="form-control rounded" id="input-description" placeholder="Description" rows="2"></textarea>\
 							</div>\
 							\
 							<div class="my-3">\
 								<h4>Request</h4>\
-					        	<textarea id="add-endpoint-request" class="form-control rounded" id="input-description" placeholder="Request body" rows="2"></textarea>\
+					        	<textarea id="add-endpoint-request-' + this.id + '" class="form-control rounded" id="input-description" placeholder="Request body" rows="2"></textarea>\
 							</div>\
 							\
 							<div class="my-3">\
 								<h4>Response</h4>\
-								<input id="add-endpoint-code-' + this.id + '" class="form-control my-1" type="text" placeholder="Code" maxlength="20" size="80">\
+								<input id="add-endpoint-code-' + this.id + '" class="form-control my-1" type="text" placeholder="Code" maxlength="10" size="80">\
 					        	\
-					        	<textarea id="add-endpoint-response" class="form-control rounded" id="input-description my-1" placeholder="Response body" rows="2"></textarea>\
+					        	<textarea id="add-endpoint-response-' + this.id +'" class="form-control rounded" id="input-description my-1" placeholder="Response body" rows="2"></textarea>\
 							</div>\
 							\
 						    <div class="d-flex justify-content-end">\
@@ -178,7 +184,7 @@ class ResourceView extends View{
 		$('#add-endpoint-method-' + this.id).val('');
 	}
 
-	addEndpoint(){
+	async addEndpoint(){
 		let method = $('#add-endpoint-method-' + this.id).val();
 		let summary = $('#add-endpoint-summary-' + this.id).val();
 		let description = $('#add-endpoint-description-' + this.id).val();
@@ -186,8 +192,10 @@ class ResourceView extends View{
 		let requestBody = $('#add-endpoint-request-' + this.id).val();
 		let responseBody = $('#add-endpoint-response-' + this.id).val();
 		let responseStatus = $('#add-endpoint-code-' + this.id).val();
+
+		console.log(description);
 		
-		let response = this.controller.addEndpoint(
+		let response = await this.controller.addEndpoint(
 			method, summary, description, uriPath, requestBody, responseBody, responseStatus);
 
 		if (response instanceof Error){
@@ -199,7 +207,9 @@ class ResourceView extends View{
 	}
 
 	createEndpoint(endpoint){
-
+		console.log(endpoint);
+		let controller = new EndpointController(this.controller.firebase, this.controller.dbRef, endpoint.id);
+		new EndpointView(controller, endpoint, this.id, this.editable);
 	}
 
 	toggleDropdown(){
