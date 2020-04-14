@@ -12,7 +12,6 @@ class ResourceView extends View{
 
 		for (const endpoint in r.endpoints) {
 			let e = r.endpoints[endpoint];
-			console.log(e);
 			this.createEndpoint(e);
 		}
 
@@ -192,8 +191,6 @@ class ResourceView extends View{
 		let requestBody = $('#add-endpoint-request-' + this.id).val();
 		let responseBody = $('#add-endpoint-response-' + this.id).val();
 		let responseStatus = $('#add-endpoint-code-' + this.id).val();
-
-		console.log(description);
 		
 		let response = await this.controller.addEndpoint(
 			method, summary, description, uriPath, requestBody, responseBody, responseStatus);
@@ -207,7 +204,6 @@ class ResourceView extends View{
 	}
 
 	createEndpoint(endpoint){
-		console.log(endpoint);
 		let controller = new EndpointController(this.controller.firebase, this.controller.dbRef, endpoint.id);
 		new EndpointView(controller, endpoint, this.id, this.editable);
 	}
