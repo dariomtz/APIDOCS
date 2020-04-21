@@ -72,6 +72,8 @@ class ProjectView extends View{
 			$('#cancel-project-changes').on('click', $.proxy(this.toggleEdit, this));
 			$('#save-project').on('click', $.proxy(this.update, this));
 
+			$('#delete-project').on('click', $.proxy(this.delete, this));
+
 			$('#input-title').on('keypress', $.proxy(this.pressKey, this));
 			$('#input-project-id').on('keypress', $.proxy(this.pressKey, this));
 			$('#input-baseURL').on('keypress', $.proxy(this.pressKey, this));
@@ -181,5 +183,11 @@ class ProjectView extends View{
 		$('#input-project-id').val(this.id);
 		$('#textarea-description').val(this.description);
 		$('#input-baseURL').val(this.baseURL);
+	}
+
+	delete(){
+		$('#confirm-delete-project').toggleClass('d-none');
+		$('#confirm-delete-project').toggleClass('d-flex');
+		//this.controller.deleteProject();
 	}
 }
