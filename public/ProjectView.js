@@ -72,6 +72,12 @@ class ProjectView extends View{
 			$('#cancel-project-changes').on('click', $.proxy(this.toggleEdit, this));
 			$('#save-project').on('click', $.proxy(this.update, this));
 
+			$('#delete-project').on('click', $.proxy(this.toggleConfirmDelete, this));
+			$('#close-confirm-delete-project').on('click', $.proxy(this.toggleConfirmDelete, this));
+			$('#cancel-confirm-delete-project').on('click', $.proxy(this.toggleConfirmDelete, this));
+			$('#confirm-delete-project-btn').on('click', $.proxy(this.delete, this));
+			$('#confirm-delete-project-input').on('keyup', $.proxy(this.checkConfirm, this));
+
 			$('#input-title').on('keypress', $.proxy(this.pressKey, this));
 			$('#input-project-id').on('keypress', $.proxy(this.pressKey, this));
 			$('#input-baseURL').on('keypress', $.proxy(this.pressKey, this));
@@ -181,5 +187,29 @@ class ProjectView extends View{
 		$('#input-project-id').val(this.id);
 		$('#textarea-description').val(this.description);
 		$('#input-baseURL').val(this.baseURL);
+	}
+
+	toggleConfirmDelete(){
+		$('#confirm-delete-project').toggleClass('d-none');
+		$('#confirm-delete-project').toggleClass('d-flex');
+		$('#confirm-delete-project-input').val('');
+	}
+
+	checkConfirm(){
+		if($('#confirm-delete-project-input').val() === 'CONFIRM'){			
+			$('#confirm-delete-project-btn').removeClass('active');
+			$('#confirm-delete-project-btn').removeClass('btn-secondary');
+			$('#confirm-delete-project-btn').addClass('btn-danger');
+		}else if(!$('#confirm-delete-project-btn').hasClass('active')){
+			$('#confirm-delete-project-btn').addClass('active');
+			$('#confirm-delete-project-btn').addClass('btn-secondary');
+			$('#confirm-delete-project-btn').removeClass('btn-danger');
+		}
+	}
+
+	delete(){
+		if (!$('#confirm-delete-project-btn').hasClass('active')) {
+			this.controller.deleteProject();
+		}
 	}
 }
