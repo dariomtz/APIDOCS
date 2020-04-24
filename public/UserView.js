@@ -46,7 +46,7 @@ class UserView extends View{
 
 	pressKey(e){
 		if(e.which === 13){
-			addProject();
+			this.addProject();
 		}
 	}
 
@@ -92,7 +92,7 @@ class UserView extends View{
 		$('#input-title').focus();
 	}
 
-	async  addProject(){
+	async addProject(){
 		var title = $('#input-title').val();
 		var projectId = $('#input-project-id').val();
 		var description = $('#textarea-description').val();
