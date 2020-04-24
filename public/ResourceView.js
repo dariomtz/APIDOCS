@@ -99,10 +99,11 @@ class ResourceView extends View{
 							    <label class="input-group-text" for="add-endpoint-method-' + this.id + '">Method</label>\
 							  </div>\
 							  <select class="custom-select" id="add-endpoint-method-' + this.id + '">\
-							    <option selected>Choose...</option>\
 							    <option value="GET">GET</option>\
 							    <option value="POST">POST</option>\
-							    <option value="PUT">PUT</option>\
+								<option value="PUT">PUT</option>\
+								<option value="DELETE">DELETE</option>\
+								<option value="PATCH">PATCH</option>\
 							  </select>\
 							</div>\
 							<div class="my-3">\
@@ -181,7 +182,12 @@ class ResourceView extends View{
 		$('#add-endpoint-form-' + this.id).toggleClass('d-none');
 		$('#btn-add-endpoint-' + this.id).toggleClass('d-none');
 		$('#add-endpoint-method-' + this.id).val('');
-		$('#add-endpoint-method-' + this.id).val('');
+		$('#add-endpoint-path-' + this.id).val('');
+		$('#add-endpoint-description-' + this.id).val('');
+		$('#add-endpoint-summary-' + this.id).val('');
+		$('#add-endpoint-request-' + this.id).val('');
+		$('#add-endpoint-response-' + this.id).val('');
+		$('#add-endpoint-code-' + this.id).val('');
 	}
 
 	async addEndpoint(){

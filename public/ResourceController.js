@@ -47,6 +47,7 @@ class ResourceController extends Controller {
 				description: this.validateField(description, '', 'Invalid description', 'The description cannot be empty'),
 				uriPath: this.validateField(uriPath, '', 'Invalid URI Path', 'The URI Path cannot be empty'),
 				responseStatus: this.validateField(responseStatus, '', 'Invalid Response Code', 'The Response Code cannot be empty'),
+				responseStatus2: this.validateField(isNaN(responseStatus), true, 'Invalid Response Code', 'The Response Code must be a number'),
 			};
 			
 			for (const key in validations) {
