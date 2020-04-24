@@ -107,12 +107,12 @@ class ResourceView extends View{
 							</div>\
 							<div class="my-3">\
 								<h4>URI Path</h4>\
-								<input id="add-endpoint-path-' + this.id + '" class="form-control" type="text" placeholder="Path" maxlength="30" size="80">\
+								<input id="add-endpoint-path-' + this.id + '" class="form-control" type="text" placeholder="Path" size="80">\
 							</div>\
 							\
 							<div class="my-3">\
 								<h4>Summary</h4>\
-								<input id="add-endpoint-summary-' + this.id + '" class="form-control" type="text" placeholder="Summary" maxlength="50" size="80">\
+								<input id="add-endpoint-summary-' + this.id + '" class="form-control" type="text" placeholder="Summary" size="80">\
 							</div>\
 						    \
 						    <div class="my-3">\
@@ -132,6 +132,7 @@ class ResourceView extends View{
 					        	<textarea id="add-endpoint-response-' + this.id +'" class="form-control rounded" id="input-description my-1" placeholder="Response body" rows="2"></textarea>\
 							</div>\
 							\
+							<div id="add-endpoint-error-' + this.id + '"></div>\
 						    <div class="d-flex justify-content-end">\
 						    	<button id="cancel-save-endpoint-' + this.id + '" type="button" class="btn btn-secondary mx-1">Cancel</button>\
 								<button id="save-endpoint-' + this.id + '" type="button" class="btn btn-primary mx-1">Save</button>\
@@ -194,9 +195,9 @@ class ResourceView extends View{
 		
 		let response = await this.controller.addEndpoint(
 			method, summary, description, uriPath, requestBody, responseBody, responseStatus);
-
+		
 		if (response instanceof Error){
-			this.createErrorAlert(response);
+			this.createErrorAlert(response, 'create-endpoint-error-' + this.id, 'add-endpoint-error-' + this.id);
 		}else{
 			this.createEndpoint(response);
 			this.toggleAddEndpoint();

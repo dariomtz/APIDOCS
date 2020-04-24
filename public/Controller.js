@@ -29,4 +29,14 @@ class Controller {
 
 		return true;
 	}
+
+	validateField(fieldValue, invalidValue, errName, errMessage){
+		if(fieldValue === invalidValue){
+			let err = new Error();
+			err.name = errName;
+			err.message = errMessage;
+			return err;
+		}
+		return null;
+	}
 }
