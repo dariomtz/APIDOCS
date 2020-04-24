@@ -60,6 +60,9 @@ class EndpointView extends View{
 			case "DELETE":
 				color = 'danger';
 				break;
+			case "PATCH":
+				color = 'info';
+				break;
 			default:
 				color = 'secondary';
 				break;

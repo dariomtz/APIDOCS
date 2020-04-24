@@ -99,20 +99,21 @@ class ResourceView extends View{
 							    <label class="input-group-text" for="add-endpoint-method-' + this.id + '">Method</label>\
 							  </div>\
 							  <select class="custom-select" id="add-endpoint-method-' + this.id + '">\
-							    <option selected>Choose...</option>\
 							    <option value="GET">GET</option>\
 							    <option value="POST">POST</option>\
-							    <option value="PUT">PUT</option>\
+								<option value="PUT">PUT</option>\
+								<option value="DELETE">DELETE</option>\
+								<option value="PATCH">PATCH</option>\
 							  </select>\
 							</div>\
 							<div class="my-3">\
 								<h4>URI Path</h4>\
-								<input id="add-endpoint-path-' + this.id + '" class="form-control" type="text" placeholder="Path" maxlength="30" size="80">\
+								<input id="add-endpoint-path-' + this.id + '" class="form-control" type="text" placeholder="Path" size="80">\
 							</div>\
 							\
 							<div class="my-3">\
 								<h4>Summary</h4>\
-								<input id="add-endpoint-summary-' + this.id + '" class="form-control" type="text" placeholder="Summary" maxlength="50" size="80">\
+								<input id="add-endpoint-summary-' + this.id + '" class="form-control" type="text" placeholder="Summary" size="80">\
 							</div>\
 						    \
 						    <div class="my-3">\
@@ -132,6 +133,7 @@ class ResourceView extends View{
 					        	<textarea id="add-endpoint-response-' + this.id +'" class="form-control rounded" id="input-description my-1" placeholder="Response body" rows="2"></textarea>\
 							</div>\
 							\
+							<div id="add-endpoint-error-' + this.id + '"></div>\
 						    <div class="d-flex justify-content-end">\
 						    	<button id="cancel-save-endpoint-' + this.id + '" type="button" class="btn btn-secondary mx-1">Cancel</button>\
 								<button id="save-endpoint-' + this.id + '" type="button" class="btn btn-primary mx-1">Save</button>\
@@ -180,7 +182,12 @@ class ResourceView extends View{
 		$('#add-endpoint-form-' + this.id).toggleClass('d-none');
 		$('#btn-add-endpoint-' + this.id).toggleClass('d-none');
 		$('#add-endpoint-method-' + this.id).val('');
-		$('#add-endpoint-method-' + this.id).val('');
+		$('#add-endpoint-path-' + this.id).val('');
+		$('#add-endpoint-description-' + this.id).val('');
+		$('#add-endpoint-summary-' + this.id).val('');
+		$('#add-endpoint-request-' + this.id).val('');
+		$('#add-endpoint-response-' + this.id).val('');
+		$('#add-endpoint-code-' + this.id).val('');
 	}
 
 	async addEndpoint(){
@@ -194,9 +201,9 @@ class ResourceView extends View{
 		
 		let response = await this.controller.addEndpoint(
 			method, summary, description, uriPath, requestBody, responseBody, responseStatus);
-
+		
 		if (response instanceof Error){
-			this.createErrorAlert(response);
+			this.createErrorAlert(response, 'create-endpoint-error-' + this.id, 'add-endpoint-error-' + this.id);
 		}else{
 			this.createEndpoint(response);
 			this.toggleAddEndpoint();

@@ -42,6 +42,24 @@ class ResourceController extends Controller {
 
 	addEndpoint(method, summary, description, uriPath, requestBody, responseBody, responseStatus){
 		return new Promise(resolve => {
+			let validations = {
+				method: this.validateField(method, null, 'Invalid Method', 'You must select a method.'),
+				description: this.validateField(description, '', 'Invalid description', 'The description cannot be empty'),
+				uriPath: this.validateField(uriPath, '', 'Invalid URI Path', 'The URI Path cannot be empty'),
+				responseStatus: this.validateField(responseStatus, '', 'Invalid Response Code', 'The Response Code cannot be empty'),
+				responseStatus2: this.validateField(isNaN(responseStatus), true, 'Invalid Response Code', 'The Response Code must be a number'),
+			};
+			
+			for (const key in validations) {
+				if (validations.hasOwnProperty(key)) {
+					const element = validations[key];
+					if(element instanceof Error){
+						resolve(element);
+						return;
+					}
+				}
+			}
+
 			let push = this.dbRef.child('/endpoints').push()
 			let endpoint = {
 				id: push.key,
@@ -51,7 +69,7 @@ class ResourceController extends Controller {
 				uriPath: uriPath,
 				requestBody: requestBody,
 				responseBody: responseBody,
-				responseStatus: responseStatus,
+				responseStatus: parseInt(responseStatus),
 			};
 
 			push.set(endpoint)
