@@ -19,20 +19,9 @@ class UserView extends View{
 	}
 
 	async loadProjects(){
-		let projects = await this.controller.getProjects();
-		let hasProjects = false;
-
-		for (const project in projects){
-			hasProjects = true;
-			$('#project-list').append(this.createCard(projects[project]));
-		}
-
-		if(!hasProjects && !this.controller.auth){
-			$('#project-list').prepend(this.createNoProjectsCard());
-		}
 
 		if(this.controller.auth){		
-			$('#project-list').prepend(this.createAddProjectCard());
+			$('#project-list').children('.row').last().prepend(this.createAddProjectCard());
 
 			$('#btn-add-project').on('click', $.proxy(this.toggleAddProject, this));
 			$('#btn-close').on('click', $.proxy(this.toggleAddProject, this));
@@ -42,6 +31,22 @@ class UserView extends View{
 			$('#input-title').on('keypress', $.proxy(this.pressKey, this));
 			$('#input-project-id').on('keypress', $.proxy(this.pressKey, this));
 		}
+
+		let projects = await this.controller.getProjects();
+		let hasProjects = false;
+
+		for (const project in projects){
+			hasProjects = true;
+			if($('#project-list').children('.row').last().children().length == 3){
+				$('#project-list').append($('<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 align-items-center" style="height: 16rem"></div>'));
+			}
+			$('#project-list').children('.row').last().append(this.createCard(projects[project]));
+		}
+
+		if(!hasProjects && !this.controller.auth){
+			$('#project-list').prepend(this.createNoProjectsCard());
+		}
+
 	}
 
 	pressKey(e){
@@ -56,7 +61,7 @@ class UserView extends View{
 			tooLong += '...';
 		}
 
-		return '<div class="col p-2"><div class="card m-auto " style="height: 15rem;">' +
+		return '<div class="col p-2"><div class="card m-auto" style="height: 15rem;">' +
 	  		'<div class="card-body">' +
 	   			'<h5 class="card-title">' + project.title + '</h5>' +
 	    		'<h6 class="card-subtitle mb-2 text-muted">' + project.projectId + '</h6>' +
@@ -79,7 +84,7 @@ class UserView extends View{
 
 	createAddProjectCard(){
 		return '<div id="add-project-card" class="col p-2"><div class="card m-auto" style="height: 15rem;">' +
-	   			'<button id="btn-add-project" class="btn btn-outline-primary btn-block h-100 m-0">' + 
+	   			'<button id="btn-add-project" class="btn btn-outline-primary btn-block h-100">' + 
 	   				'<h5>Add new project</h5> <span class="display-3">+</span>' +
 	   			'</button>' +
 		'</div><div>';
