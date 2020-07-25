@@ -25,6 +25,8 @@ class ResourceView extends View{
 			$('#edit-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
 			$('#cancel-save-resource-' + this.id).on('click', $.proxy(this.toggleEdit, this));
 			$('#save-resource-' + this.id).on('click', $.proxy(this.update, this));
+			$('#delete-resource-' + this.id).on('click', $.proxy(this.delete, this));
+
 		}else{
 			$('.edit-resource').remove();
 		}
@@ -38,7 +40,7 @@ class ResourceView extends View{
 
 	createHTML(){
 		return '\
-		<div class="border rounded my-2"> \
+		<div id="' + this.id + '-wrapper" class="border rounded my-2"> \
 			<div id="edit-resource-form-' + this.id + '" class="d-none container-fluid my-2">\
 				<button id="btn-close-edit-resource-' + this.id + '" type="button" class="close" aria-label="Close">\
 					<span aria-hidden="true">&times;</span>\
@@ -219,5 +221,12 @@ class ResourceView extends View{
 		$('#' + this.id + '-dropdown').toggleClass('dropup');
 		$('#' + this.id + '-info').toggleClass('d-none');
 		$('#' + this.id + '-info').toggleClass('d-flex');
+	}
+
+	delete(){
+		if (confirm('Are you sure you want to delete this?')){
+			this.controller.deleteResource();
+			$('#' + this.id + '-wrapper').remove();
+		}
 	}
 }
