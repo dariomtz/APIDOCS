@@ -137,6 +137,7 @@ class ProjectView extends View{
 		$('#add-resource-title').val('');
 		$('#add-resource-description').val('');
 		$('#add-resource-title').focus();
+		$('#add-resource-form').children('.alert-danger').remove();
 	}
 
 	async addResource(){
