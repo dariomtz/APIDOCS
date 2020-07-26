@@ -138,7 +138,6 @@ class ResourceView extends View{
 						    	<button id="cancel-save-endpoint-' + this.id + '" type="button" class="btn btn-secondary mx-1">Cancel</button>\
 								<button id="save-endpoint-' + this.id + '" type="button" class="btn btn-primary mx-1">Save</button>\
 							</div>\
-							<hr>\
 						</div>\
 						\
 						<button id="btn-add-endpoint-' + this.id + '" type="button" class="btn btn-outline-primary btn-block"><span class="h3">+</span></button>\
@@ -188,6 +187,7 @@ class ResourceView extends View{
 		$('#add-endpoint-request-' + this.id).val('');
 		$('#add-endpoint-response-' + this.id).val('');
 		$('#add-endpoint-code-' + this.id).val('');
+		$('#add-endpoint-error-' + this.id).children('.alert-danger').remove();
 	}
 
 	async addEndpoint(){
