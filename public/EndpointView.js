@@ -12,7 +12,7 @@ class EndpointView extends View{
 
 		if(editable){
 			//on-click events for features that only the owner of the project should have access to must go here
-
+			$('#' + this.id + '-delete-btn').on('click', $.proxy(this.deleteEndpoint, this));
 		}else{
 			$('.edit-endpoint').remove();
 		}
@@ -87,41 +87,43 @@ class EndpointView extends View{
 
 	createHTML(){
 		return '\
-		<div id="' + this.id + '" class="border container-fluid rounded-lg mb-2">\
-			<div id="endpoint-bar-' + this.id  +'" class="row align-items-center p-2">\
-				<div class="col-12 col-sm-6 col-md-2 align-middle text-center">\
-					<span id="endpoint-method-' + this.id + '" class="h6 border rounded w-100 m-0 py-1 d-block"></span>\
+		<div id="' + this.id+ '-wrapper">\
+			<div id="' + this.id + '" class="border container-fluid rounded-lg mb-2">\
+				<div id="endpoint-bar-' + this.id  +'" class="row align-items-center p-2">\
+					<div class="col-12 col-sm-6 col-md-2 align-middle text-center">\
+						<span id="endpoint-method-' + this.id + '" class="h6 border rounded w-100 m-0 py-1 d-block"></span>\
+					</div>\
+					<div class="col-12 col-sm-6 col-md-3 text-left text-wrap my-md-0 mt-3 mb-2">\
+						<span id="endpoint-uriPath-' + this.id + '" class="h6"></span>\
+					</div>\
+					<div class="col-12 col-md-3 text-left my-md-0 mt-2 mb-3">\
+						<span id="endpoint-summary-' + this.id + '" class="small disabled"></span>\
+					</div>\
+					<div class="col-6 col-md-2 text-center edit">\
+						<button id="' + this.id +'-delete-btn" class="btn btn-danger">Delete</button>\
+					</div>\
+					<div class="col-6 col-md-2 text-center edit">\
+						<button id="' + this.id +'-edit-btn" class="btn btn-warning">Edit</button>\
+					</div>\
 				</div>\
-				<div class="col-12 col-sm-6 col-md-3 text-left my-md-0 mt-3 mb-2">\
-					<span id="endpoint-uriPath-' + this.id + '" class="h6"></span>\
-				</div>\
-				<div class="col-12 col-md-3 text-left my-md-0 mt-2 mb-3">\
-					<span id="endpoint-summary-' + this.id + '" class="small disabled"></span>\
-				</div>\
-				<div class="col-6 col-md-2 text-center edit">\
-					<button class="btn btn-danger">Delete</button>\
-				</div>\
-				<div class="col-6 col-md-2 text-center edit">\
-					<button class="btn btn-warning">Edit</button>\
-				</div>\
-			</div>\
-			<div id="' + this.id + '-info" class="p-3 d-none">\
-				<span class="h6">Description </span>\
-				<br>\
-				<span id="endpoint-description-' + this.id + '"></span>\
-				<br>\
-				<span class="h6">Request Body</span>\
-				<br>\
-				<div class="bg-light text-dark d-block rounded-lg border bourder-light p-3">\
-					<span id="endpoint-req-body-' + this.id + '" ></span>\
-				</div>\
-				<br>\
-				<span class="h6">Response Status Code </span>\
-				<span id="endpoint-res-status-' + this.id + '" class="bg-light text-dark rounded-lg border bourder-light px-3 mx-2"></span>\
-				<br><br>\
-				<span class="h6" >Response Body </span>\
-				<div class="bg-light text-dark d-block rounded-lg border bourder-light p-3">\
-					<span id="endpoint-res-body-' + this.id + '"></span>\
+				<div id="' + this.id + '-info" class="p-3 d-none">\
+					<span class="h6">Description </span>\
+					<br>\
+					<span id="endpoint-description-' + this.id + '"></span>\
+					<br>\
+					<span class="h6">Request Body</span>\
+					<br>\
+					<div class="bg-light text-dark d-block rounded-lg border bourder-light p-3">\
+						<span id="endpoint-req-body-' + this.id + '" ></span>\
+					</div>\
+					<br>\
+					<span class="h6">Response Status Code </span>\
+					<span id="endpoint-res-status-' + this.id + '" class="bg-light text-dark rounded-lg border bourder-light px-3 mx-2"></span>\
+					<br><br>\
+					<span class="h6" >Response Body </span>\
+					<div class="bg-light text-dark d-block rounded-lg border bourder-light p-3">\
+						<span id="endpoint-res-body-' + this.id + '"></span>\
+					</div>\
 				</div>\
 			</div>\
 		</div>\
@@ -133,5 +135,11 @@ class EndpointView extends View{
 		$('#' + this.id + '-info').toggleClass('d-none');
 	}
 
+	deleteEndpoint(){
+		if (confirm('Are you sure you want to delete this?')){
+			this.controller.deleteEndpoint();
+			$('#' + this.id + '-wrapper').remove();
+		}
+	}
 	
 }
