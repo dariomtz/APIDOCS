@@ -126,7 +126,7 @@ class ProjectController extends Controller {
 				if (validations.hasOwnProperty(key)) {
 					const element = validations[key];
 					if (element instanceof Error){
-						resoulve(element);
+						resolve(element);
 						return;
 					}
 				}
