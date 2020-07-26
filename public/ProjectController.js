@@ -117,6 +117,21 @@ class ProjectController extends Controller {
 		return new Promise(resolve => {
 			let push = this.firebaseRef.child('resources').push();
 
+			let validations = {
+				title: this.validateField(resourceTitle, '', 'Invalid Title', 'The title field cannot be empty'),
+				description: this.validateField(resourceDescription, '', 'Invalid Description', 'The description field cannot be empty')
+			}
+
+			for (const key in validations) {
+				if (validations.hasOwnProperty(key)) {
+					const element = validations[key];
+					if (element instanceof Error){
+						resoulve(element);
+						return;
+					}
+				}
+			}
+
 			push.set({
 				title: resourceTitle,
 				description: resourceDescription,
