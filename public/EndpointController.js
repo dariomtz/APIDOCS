@@ -33,7 +33,7 @@ class EndpointController extends Controller{
 				uriPath: uriPath,
 				requestBody: requestBody,
 				responseBody: responseBody,
-				responseStatus: responseStatus,
+				responseStatus: parseInt(responseStatus),
 			};
 
 			this.dbRef.update(newEndpoint)
