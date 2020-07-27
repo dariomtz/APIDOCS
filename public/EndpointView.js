@@ -16,6 +16,7 @@ class EndpointView extends View{
 			$('#' + this.id + '-edit-btn').on('click', $.proxy(this.toggleEdit, this));
 			$('#' + this.id + '-close-edit-btn').on('click', $.proxy(this.toggleEdit, this));
 			$('#' + this.id + '-cancel-save-edit-btn').on('click', $.proxy(this.toggleEdit, this));
+			$('#' + this.id + '-save-edit-btn').on('click', $.proxy(this.saveEdit, this));
 		}else{
 			$('.edit-endpoint').remove();
 		}
@@ -37,16 +38,13 @@ class EndpointView extends View{
 	 * The values of the endpoint must be set before this method is used.
 	 * */
 	populateEndpoint(){
-		this.description = this.parseEndline(this.description);
-		this.requestBody = this.parseEndline(this.requestBody);
-		this.responseBody = this.parseEndline(this.responseBody);
 
 		$('#endpoint-method-' + this.id).html(this.method);
 		$('#endpoint-summary-' + this.id).html(this.summary);
-		$('#endpoint-description-' + this.id).html(this.description);
+		$('#endpoint-description-' + this.id).html(this.parseEndline(this.description));
 		$('#endpoint-uriPath-' + this.id).html(this.uriPath);
-		$('#endpoint-req-body-' + this.id).html(this.requestBody);
-		$('#endpoint-res-body-' + this.id).html(this.responseBody);
+		$('#endpoint-req-body-' + this.id).html(this.parseEndline(this.requestBody));
+		$('#endpoint-res-body-' + this.id).html(this.parseEndline(this.responseBody));
 		$('#endpoint-res-status-' + this.id).html(this.responseStatus);
 		
 		let color;
@@ -70,6 +68,13 @@ class EndpointView extends View{
 				color = 'secondary';
 				break;
 		}
+		
+		if(this.currentColor !== undefined){
+			$('#endpoint-bar-' + this.id).removeClass('alert-' + this.currentColor);
+			$('#endpoint-method-' + this.id).removeClass('bg-' + this.currentColor);
+			$('#endpoint-method-' + this.id).removeClass('border-' + this.currentColor);
+			$('#' + this.id + '-wrapper').removeClass('border-' + this.currentColor);
+		}
 
 		$('#endpoint-bar-' + this.id).addClass('alert-' + color);
 		$('#endpoint-method-' + this.id).addClass('bg-' + color);
@@ -77,6 +82,7 @@ class EndpointView extends View{
 		$('#endpoint-method-' + this.id).addClass('text-light');
 		$('#' + this.id + '-wrapper').addClass('border-' + color);
 		
+		this.currentColor = color;
 	}
 
 	parseEndline(text){
@@ -203,6 +209,39 @@ class EndpointView extends View{
 		$('#edit-endpoint-req-body-' + this.id).val(this.requestBody);
 		$('#edit-endpoint-res-body-' + this.id).val(this.responseBody);
 		$('#edit-endpoint-res-status-' + this.id).val(this.responseStatus);
+	}
+
+	saveEdit(){
+		let method = $('#edit-endpoint-method-' + this.id).val();
+		let summary = $('#edit-endpoint-summary-' + this.id).val();
+		let description = $('#edit-endpoint-description-' + this.id).val();
+		let path = $('#edit-endpoint-path-' + this.id).val();
+		let request = $('#edit-endpoint-req-body-' + this.id).val();
+		let responseBody = $('#edit-endpoint-res-body-' + this.id).val();
+		let responseStatus = $('#edit-endpoint-res-status-' + this.id).val();
+
+		let update = this.controller.updateEndpoint(
+			method, summary, description, path, request, responseBody, responseStatus
+		);
+
+		if (update instanceof Error){
+			this.createErrorAlert(update, this.id + '-edit-error-alert', 'edit-endpoint-error-' + this.id);
+		}else{
+			let endpoint = {
+				id: this.id,
+				method: method,
+				summary: summary,
+				description: description,
+				uriPath: path,
+				requestBody: request,
+				responseBody: responseBody,
+				responseStatus: responseStatus,
+			}
+
+			this.setEndpoint(endpoint);
+			this.populateEndpoint();
+			this.toggleEdit();
+		}
 	}
 
 	deleteEndpoint(){
