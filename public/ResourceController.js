@@ -7,6 +7,21 @@ class ResourceController extends Controller {
 
 	updateResource(newTitle, newDescription){
 		return new Promise(resolve => {
+			let validations = {
+				title: this.validateField(newTitle, '', 'Invalid Title', 'The Title field must not be empty.'),
+				description: this.validateField(newDescription, '', 'Invalid Description', 'The Description field must not be empty.'),
+			}
+
+			for (const key in validations) {
+				if (validations.hasOwnProperty(key)) {
+					const element = validations[key];
+					if (element instanceof Error){
+						resolve(element);
+						return;
+					}
+				}
+			}
+			
 			this.dbRef.update({
 				title: newTitle,
 				description: newDescription,
