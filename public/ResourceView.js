@@ -155,6 +155,7 @@ class ResourceView extends View{
 		$('#edit-resource-title-' + this.id ).val(this.title);
 		$('#edit-resource-description-' + this.id ).val(this.description);
 		$('#edit-resource-title-' + this.id).focus();
+		$('#edit-resource-' + this.id + 'alert').remove();
 	}
 
 	async update(){
@@ -164,7 +165,7 @@ class ResourceView extends View{
 		const response = await this.controller.updateResource(title, description);
 		
 		if (response instanceof Error){
-			createErrorAlert(response, 'edit-resource-' + this.id + 'alert', 'edit-resource-form-' + this.id);
+			this.createErrorAlert(response, 'edit-resource-' + this.id + 'alert', 'edit-resource-form-' + this.id);
 			return;
 		}
 
