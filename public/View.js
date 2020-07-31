@@ -1,4 +1,4 @@
-class View {
+class View extends Showable{
 	constructor(controller){
 		this.controller = controller;
 	}

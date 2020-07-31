@@ -1,4 +1,4 @@
-class Controller {
+class Controller extends Showable{
 	constructor(firebase){
 		this.firebase = firebase;
 		this.db = firebase.database();

@@ -2,6 +2,7 @@ class ProjectPreView extends View {
     constructor(fb){
         super(fb);
         this.model = new ProjectModel(fb.parent, fb.key);
+        this.id = this.model.id;
     }
 
     async render(){
@@ -12,7 +13,7 @@ class ProjectPreView extends View {
 			tooLong += '...';
 		}
 
-		return '<div class="col p-2"><div class="card m-auto" style="height: 15rem;">' +
+		return '<div id="'+ this.id +'" class="col p-2"><div class="card m-auto" style="height: 15rem;">' +
 	  		'<div class="card-body">' +
 	   			'<h5 class="card-title">' + project.title + '</h5>' +
 	    		'<h6 class="card-subtitle mb-2 text-muted">' + project.id + '</h6>' +
@@ -23,24 +24,5 @@ class ProjectPreView extends View {
 			'</div>' +
 		'</div></div>';
     }
-
-    async appendTo(parent){
-        $(parent).append(await this.render())
-        return;
-    }
-
-    async prependTo(parent){
-        $(parent).prepend(await this.render())
-        return;
-    }
-
-    show(){
-        $('#' + this.model.id).removeClass('d-none');
-    }
-
-    hide(){
-        $('#' + this.model.id).addClass('d-none');
-    }
-
 
 }
