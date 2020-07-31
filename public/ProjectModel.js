@@ -1,10 +1,30 @@
+/**
+ * Project Model:
+ * @extends Model
+ * 
+ * A ProjectModel instance allows you to perform CRUD operations from the Firebase database related to projects.
+ */
 class ProjectModel extends Model{
+    /**
+     * Creates an instance of ProjectModel
+     * @constructor
+     * 
+     * @param {Object} fb Firebase Reference to the projects of a user.
+     * @param {String} id Identifier of the project.
+     */
     constructor(fb, id = null){
         super(fb, id);
         this.user = fb.key;
         this.object = null;
     }
 
+    /**
+     * If the project object passed is valid, it creates or updates the project on the database.
+     * 
+     * @param {Object} project A project Object.
+     * 
+     * @returns {Promise}
+     */
     set(project){
         let validation = this.validate(project);
         if(validation instanceof Error){
@@ -90,6 +110,12 @@ class ProjectModel extends Model{
         
     }
 
+    /**
+     * Gets the specified project.
+     * Fails if no project has been specified.
+     * 
+     * @returns {Promise} 
+     */
     get(){
         if(this.id === null){
             throw new Error('No project specified');
@@ -113,6 +139,12 @@ class ProjectModel extends Model{
         return this.object;
     }
 
+    /**
+     * Deletes the specified project.
+     * Fails if no project has been specified.
+     * 
+     * @returns {Promise}
+     */
     delete(){
         if(this.id === null){
             throw new Error('No project specified');
@@ -131,6 +163,13 @@ class ProjectModel extends Model{
 		});
     }
 
+    /**
+     * Checks that a project is valid.
+     * 
+     * @param {Object} project A project Object.
+     * 
+     * @returns {Error} The error of the project, otherwise null.
+     */
     validate(project){
         const fields = [
             'id',
@@ -158,11 +197,20 @@ class ProjectModel extends Model{
                 return validation;
             }
         });
+
+        return null;
     }
 
-    available(){
+    /**
+     * Checks if an Id is still available.
+     * 
+     * @param {String} id Identifier of a new project.
+     * 
+     * @returns {Promise}
+     */
+    available(id){
         return new Promise(resolve => {    
-            this.fb.child(this.object.id).once('value')
+            this.fb.child(id).once('value')
             .then(snap => {
                 if (snap.exists()) {
                     resolve(this.createError(
@@ -170,7 +218,7 @@ class ProjectModel extends Model{
                         'The Id has to be unique and this already belongs to a project you own.'
                     ));	
                 }else{
-                    resolve(true);
+                    resolve(null);
                 }
                 return;
             });
