@@ -1,6 +1,7 @@
 class ProjectPreView extends View {
-    constructor(fb, id){
-        this.model = new ProjectModel(fb, id);
+    constructor(fb){
+        super(fb);
+        this.model = new ProjectModel(fb.parent, fb.key);
     }
 
     async render(){
@@ -23,13 +24,13 @@ class ProjectPreView extends View {
 		'</div></div>';
     }
 
-    async appendTo(parentId){
-        $('#' + parentId).append(await this.render())
+    async appendTo(parent){
+        $(parent).append(await this.render())
         return;
     }
 
-    async prependTo(parentId){
-        $('#' + parentId).prepend(await this.render())
+    async prependTo(parent){
+        $(parent).prepend(await this.render())
         return;
     }
 

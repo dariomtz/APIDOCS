@@ -3,6 +3,7 @@ class UserController extends Controller {
 		super(firebase);
 		this.userName = userName;
 		this.auth = false;
+		this.projects = this.db.ref(this.userName + '/projects');
 	}
 
 	exists(){

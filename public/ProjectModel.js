@@ -100,9 +100,8 @@ class ProjectModel extends Model{
             return new Promise(resolve => {
                 this.fb.child(this.id).once('value')
                 .then(snap => {
-                    this.object = snap.val()
+                    this.object = snap.val();
                     resolve(this.object);
-                    return;
                 })
                 .catch(err => {
                     resolve(err);

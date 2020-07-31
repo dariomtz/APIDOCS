@@ -40,7 +40,8 @@ class UserView extends View{
 			if($('#project-list').children('.row').last().children().length == 3){
 				$('#project-list').append($('<div class="row row-cols-1 row-cols-sm-1 row-cols-md-2 row-cols-lg-3 align-items-center" style="height: 16rem"></div>'));
 			}
-			$('#project-list').children('.row').last().append(this.createCard(projects[project]));
+			const projectView = new ProjectPreView(this.controller.projects.child(project));
+			projectView.appendTo($('#project-list').children('.row').last())
 		}
 
 		if(!hasProjects && !this.controller.auth){
