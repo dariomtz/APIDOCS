@@ -1,5 +1,5 @@
 // Your web app's Firebase configuration
-var firebaseConfig = {
+const firebaseConfig = {
 	apiKey: "AIzaSyCxsAlKPNxlp6S-ThPGrmKzxnoTrMsr-CU",
 	authDomain: "api-docs-iteso.firebaseapp.com",
 	databaseURL: "https://api-docs-iteso.firebaseio.com",
@@ -9,6 +9,6 @@ var firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-var database = firebase.database();
-var auth = firebase.auth();
+const database = firebase.database();
+const auth = firebase.auth();
 

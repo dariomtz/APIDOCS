@@ -1,7 +1,7 @@
 class ProjectModel extends Model{
-    constructor(fb, user,id = null){
+    constructor(fb, id = null){
         super(fb, id);
-        this.user = user;
+        this.user = fb.key;
         this.object = null;
     }
 
