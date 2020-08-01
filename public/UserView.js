@@ -23,13 +23,12 @@ class UserView extends View{
 		if(this.controller.auth){		
 			$('#project-list').children('.row').last().prepend(this.createAddProjectCard());
 
-			$('#btn-add-project').on('click', $.proxy(this.toggleAddProject, this));
-			$('#btn-close').on('click', $.proxy(this.toggleAddProject, this));
-			$('#btn-cancel-create-project').on('click', $.proxy(this.toggleAddProject, this));
-			$('#btn-create-project').on('click', $.proxy(this.addProject, this));
+			$('#btn-add-project').on('click', $.proxy(this.openAddProject, this));
 
-			$('#input-title').on('keypress', $.proxy(this.pressKey, this));
-			$('#input-project-id').on('keypress', $.proxy(this.pressKey, this));
+			this.projectController = new ProjectController(this.controller.projects);
+			await this.projectController.appendTo($('#add-project-form'));
+			this.projectController.hide();
+			this.projectController.setHideShowFunction($.proxy(this.closeAddProject, this));
 		}
 
 		let projects = await this.controller.getProjects();
@@ -73,31 +72,12 @@ class UserView extends View{
 		'</div><div>';
 	}
 
-	toggleAddProject(){
-		this.clearNewProjectForm();
+	openAddProject(){
+		this.projectController.show();
+	}
+
+	closeAddProject(){
 		$('#user-page').toggleClass('d-none');
-		$('#add-project-form').toggleClass('d-none');
-		$('#input-title').focus();
-	}
-
-	async addProject(){
-		var title = $('#input-title').val();
-		var projectId = $('#input-project-id').val();
-		var description = $('#textarea-description').val();
-
-		var response = await this.controller.addProject(title, projectId, description);
-
-		if(response instanceof Error){
-			this.createErrorAlert(response, 'create-project-alert', 'new-project-form');
-			return;
-		}
-	}
-	
-	clearNewProjectForm(){
-		$('#new-project-form :text').each((i, val) => {
-			$(val).val('');
-		});
-		$('#new-project-form #textarea-description').val('');
 	}
 }
 

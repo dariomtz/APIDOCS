@@ -83,7 +83,7 @@ class Model{
 			if (!flag) {
 				return this.createError(
                     'Invalid ' + field,
-                    'The ' + field + 'field can have only lower case letters, numbers and hyphens.'
+                    'The ' + field + ' field can have only lower case letters, numbers and hyphens.'
                 )
 			}
 		}

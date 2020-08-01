@@ -1,155 +1,110 @@
-class ProjectController extends Controller {
-	constructor(firebase, owner, projectId){
-		super(firebase);
-		this.owner = owner;
-		this.id = projectId;
-		this.firebaseRef = this.db.ref(this.owner + '/projects/' + this.id);
-	}
+class ProjectController extends Controller{
+    constructor(fb, id = null, model = null){
+        super(null);
+        this.id = id;
+        this.HTMLid = (id) ? id + '-project-form' : 'project-form';
+        if (model){
+            this.model = model;
+        }else{
+            this.model = new ProjectModel(fb, id);
+        }
+    }
 
-	exists(){
-		return new Promise(resolve => {
-			this.firebaseRef.once('value')
-			.then(snap => {
-				resolve(snap.exists());
-				return;
-			})
-			.catch(error =>{
-				resolve(error);
-				return;
-			})
-		})
-	}
+    render(){
+        let saveBtn = (this.id) ? 'Save' : 'Create';
+        return '\
+        <div id="' + this.HTMLid + '" class="pb-2">\
+            <button id="btn-close-project-form" class="close close-project-form" aria-label="Close">\
+                <span aria-hidden="true">&times;</span>\
+            </button>\
+            <div class="my-3">\
+                <h4>Title</h4>\
+                <input id="input-title" class="form-control" placeholder="Title" maxlength="70">\
+            </div>\
+            \
+            <div class="my-3">\
+                <h4>Project Identifier</h4>\
+                <input id="input-id" class="form-control" placeholder="Project ID" maxlength="30">\
+                <small id="emailHelp" class="form-text text-muted">This ID will show up in your Project URL.</small>\
+            </div>\
+            \
+            <div class="my-3">\
+                <h4>Description</h4>\
+                <textarea id="input-description" class="form-control rounded"  placeholder="Description" rows="2"></textarea>\
+            </div>\
+            \
+            <div class="my-3">\
+                <h4>Base URI</h4>\
+                <input id="input-URI" class="form-control" placeholder="Base URI" maxlength="30">\
+                <small class="form-text text-muted">This is where your API lives.</small>\
+            </div>\
+            \
+            <div class="d-flex justify-content-end">\
+                <button type="button" class="btn btn-outline-danger mx-2 close-project-form">Cancel</button>\
+                <button id="save-project" class="btn btn-primary">'+ saveBtn +'</button>\
+            </div>\
+        </div>\
+        ';
+    }
 
-	getProject(){
-		return new Promise(resolve => {
-			this.firebaseRef.once('value')
-			.then(snap => {
-				resolve(snap.val());
-			})
-			.catch(err => {
-				resolve(err);
-			});
-		});
-	}
+    async save(){
+        let project = {
+            title: $('#input-title').val(),
+            id: $('#input-id').val(),
+            description: $('#input-description').val(),
+            URI: $('#input-URI').val(),
+        }
+        
+        let response = await this.model.set(project);
 
-	updateProject(title = null, projectId = null, description = null, baseURL = null){
-		return new Promise(resolve => {
-			if (projectId && projectId !== this.id) {
-				let validation = this.validateSlug(projectId);
-				if (validation instanceof Error) {
-					validation.name = 'Invalid Project Id'
-					resolve(validation);
-					return;
-				}
-				this.db.ref(this.owner + '/projects').child(projectId).once('value')
-				.then(snap => {
-					if (snap.exists()) {
-						var err =  new Error('This project identifier is already the identifier of one project you own.');
-						err.name = 'Invalid Project Id';
-						resolve(err);
-						return;
-					}else{
-						let date = new Date();
-						this.firebaseRef.once('value')
-						.then(snap => {
+        if (response instanceof Error){
+            this.createErrorAlert(response, 'edit-project-alert', 'project-form');
+        }else{
+            this.hide();
+        }
+    }
 
-							var project = snap.val();
-							console.log(project);
-							project.title = title ? title : project.title;
-							project.description = description ? description : project.description;
-							project.projectId = projectId ? projectId : project.projectId;
-							project.baseURL = baseURL ? baseURL : project.baseURL;
+    async appendTo(parent){
+        await super.appendTo(parent);
+        this.activate();
+    }
 
-							this.db.ref(this.owner + '/projects').child(projectId).set(project)
-							.then(() => {
-								this.firebaseRef.remove();
-								window.location.href = "/" + this.owner + "/" + projectId;
-							})
-							.catch(err => {
-								resolve(err);
-								return;
-							});
-						})
-						
-					}
-				});
-			}else{
-				let date = new Date();
-				this.firebaseRef.update({
-					updated: date.toISOString(),
-					title: title,
-					description: description,
-					projectId : projectId,
-					baseURL: baseURL,
-				})
-				.then(() => {
-					resolve(true);
-					return;
-				})
-				.catch(err => {
-					resolve(err);
-					return;
-				})
-			}
-		});
-	}
+    async prependTo(parent){
+        await super.prependTo(parent);
+        this.activate();
+    }
 
-	deleteProject(){
-		return new Promise(resolve => {
-			this.firebaseRef.remove()
-			.then(() => {
-				window.location.href = '/' + this.owner;
-				resolve(true);
-				return;
-			})
-			.catch(err => {
-				resolve(err);
-				return;
-			});
-		});
-	}
+    activate(){
+        $('.close-project-form').on('click', $.proxy(this.hide, this));
+        $('#save-project').on('click', $.proxy(this.save, this));
+    }
 
-	updateAuthorization(authDescription){
+    show(){
+        super.show();
+        this.reset();
+    }
 
-	}
+    hide(){
+        super.hide();
+        this.reset();
+    }
 
-	addResource(resourceTitle, resourceDescription){
-		return new Promise(resolve => {
-			let push = this.firebaseRef.child('resources').push();
-
-			let validations = {
-				title: this.validateField(resourceTitle, '', 'Invalid Title', 'The title field cannot be empty'),
-				description: this.validateField(resourceDescription, '', 'Invalid Description', 'The description field cannot be empty')
-			}
-
-			for (const key in validations) {
-				if (validations.hasOwnProperty(key)) {
-					const element = validations[key];
-					if (element instanceof Error){
-						resolve(element);
-						return;
-					}
-				}
-			}
-
-			push.set({
-				title: resourceTitle,
-				description: resourceDescription,
-				id: push.key,
-			})
-			.then(() => {
-				resolve({
-					title: resourceTitle,
-					description : resourceDescription,
-					id :  push.key,
-				});
-				return;
-			})
-			.catch(err => {
-				resolve(err);
-				return;
-			});
-		});
-	}
-
+    async reset(){
+        if(this.id){
+            //reset to object values
+            await this.model.get();
+            $('#input-title').val(this.model.title);
+            $('#input-id').val(this.model.id);
+            $('#input-description').val(this.model.description);
+            $('#input-URI').val(this.model.URI);
+        }else{
+            //reset to empty
+            $('#input-title').val('');
+            $('#input-id').val('');
+            $('#input-description').val('');
+            $('#input-URI').val('');
+        }
+        $('#input-title').focus();
+        $('#edit-project-alert').remove();
+    }
 }

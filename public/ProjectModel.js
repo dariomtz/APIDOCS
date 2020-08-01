@@ -14,7 +14,7 @@ class ProjectModel extends Model{
      */
     constructor(fb, id = null){
         super(fb, id);
-        this.user = fb.key;
+        this.user = fb.parent.key;
         this.object = null;
     }
 
@@ -41,14 +41,16 @@ class ProjectModel extends Model{
                         id: project.id,
                         title: project.title,
                         description: project.description,
-                        URI: project.uri,
+                        URI: project.URI,
                         author: this.user,
                         created: date.toISOString(),
                         updated: date.toISOString()
                     };
+                    console.log(this.object);
                     this.id = this.object.id;
                     this.fb.child(this.id).set(this.object)
                     .then(()=>{
+                        window.location.href = "/" + this.user + "/" + this.id;
                         resolve(true);
                         return;
                     }).catch(err => {
@@ -188,15 +190,16 @@ class ProjectModel extends Model{
         });
 
         let validations = [
-            this.validateSlug(project.id),
-            this.validateField(project.title, '', 'Invalid Title', 'The Title cannot be empty.'),
+            this.validateSlug(project.id, 'Project Identifier'),
+            this.validateField(project.title, '', 'Invalid Title', 'The Title field cannot be empty.'),
+            this.validateField(project.title, '', 'Invalid Description', 'The Description field cannot be empty.'),
         ];
 
-        validations.forEach((validation)=>{
+        for (const validation of validations) {
             if (validation instanceof Error){
                 return validation;
             }
-        });
+        }
 
         return null;
     }

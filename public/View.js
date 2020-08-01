@@ -1,5 +1,6 @@
 class View extends Showable{
 	constructor(controller){
+		super();
 		this.controller = controller;
 	}
 

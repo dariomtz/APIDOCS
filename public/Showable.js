@@ -29,13 +29,23 @@ class Showable {
      * Shows this Showable's HTML.
      */
     show(){
-        $('#' + this.id).removeClass('d-none');
+        $('#' + this.HTMLid).removeClass('d-none');
+        if(this.foo !== undefined){
+            this.foo();
+        }
     }
 
     /**
      * Hides this Showable's HTML.
      */
     hide(){
-        $('#' + this.id).addClass('d-none');
+        $('#' + this.HTMLid).addClass('d-none');
+        if(this.foo !== undefined){
+            this.foo();
+        }
+    }
+
+    setHideShowFunction(foo){
+        this.foo = foo;
     }
 }

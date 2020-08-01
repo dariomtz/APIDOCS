@@ -2,7 +2,8 @@ class ProjectPreView extends View {
     constructor(fb){
         super(fb);
         this.model = new ProjectModel(fb.parent, fb.key);
-        this.id = this.model.id;
+		this.id = this.model.id;
+		this.HTMLid = this.id;
     }
 
     async render(){
