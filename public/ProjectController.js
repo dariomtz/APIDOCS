@@ -26,6 +26,9 @@ class ProjectController extends Controller{
 
     /**
      * Creates the HTML of this Object.
+	 * @async
+     * 
+     * @returns {HTMLElement} 
      */
     render(){
         let saveBtn = (this.id) ? 'Save' : 'Create';
@@ -66,6 +69,7 @@ class ProjectController extends Controller{
 
     /**
      * Sends the content of the form to the ProjectModel Object.
+     * @async
      */
     async save(){
         let project = {
@@ -94,6 +98,7 @@ class ProjectController extends Controller{
 
     /**
      * Function that will run when the form is hiden and shown.
+     * @async
      */
     async reset(){
         if(this.id){

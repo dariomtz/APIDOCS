@@ -1,11 +1,29 @@
+/**
+ * ProjectPreView:
+ * 
+ * A View that shows the core information of a project.
+ */
 class ProjectPreView extends View {
+
+	/**
+	 * Creates an instance of ProjectPreview.
+	 * @constructor
+	 * 
+	 * @param {Object} fb Firebase Reference to the project.
+	 */
     constructor(fb){
         super(fb);
         this.model = new ProjectModel(fb.parent, fb.key);
 		this.id = this.model.id;
 		this.HTMLid = this.id;
-    }
-
+	}
+	
+	/**
+     * Creates the HTML of this Object.
+	 * @async
+     * 
+     * @returns {HTMLElement} 
+     */
     async render(){
         let project = await this.model.get();
 

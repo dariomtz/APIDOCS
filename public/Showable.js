@@ -8,6 +8,7 @@ class Showable {
     
     /**
      * Appends the Showable's HTML to an existing HTML object.
+     * @async
      * 
      * @param {Object} parent The HTML object to which this Showable will be appended.
      */
@@ -19,6 +20,8 @@ class Showable {
 
     /**
      * Preppends the Showable's HTML to an existing HTML object.
+     * @async
+     * 
      * @param {Object} parent The HTML object to which this Showable will be prepended.
      */
     async prependTo(parent){
