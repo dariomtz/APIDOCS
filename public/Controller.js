@@ -22,6 +22,20 @@ class Controller extends Showable{
 		return;
 	}
 
+	show(){
+        super.show();
+        this.reset();
+    }
+
+    hide(){
+        super.hide();
+        this.reset();
+	}
+	
+	reset(){
+		
+	}
+
 	validateSlug(slug){
 		if(typeof slug !== "string"  || slug === ''){
 	    	var e = new Error('This field must be a non empty string with only lower case letters, numbers and hyphens.');

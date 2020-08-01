@@ -12,7 +12,8 @@ class Showable {
      * @param {Object} parent The HTML object to which this Showable will be appended.
      */
     async appendTo(parent){
-        $(parent).append(await this.render())
+        $(parent).append(await this.render());
+        this.activate();
         return;
     }
 
@@ -21,8 +22,13 @@ class Showable {
      * @param {Object} parent The HTML object to which this Showable will be prepended.
      */
     async prependTo(parent){
-        $(parent).prepend(await this.render())
+        $(parent).prepend(await this.render());
+        this.activate();
         return;
+    }
+
+    activate(){
+
     }
 
     /**
@@ -45,6 +51,11 @@ class Showable {
         }
     }
 
+    /**
+     * A method that runs every time the showable is hiden and shown.
+     * 
+     * @param {function} foo The function to be run when the set and hide.
+     */
     setHideShowFunction(foo){
         this.foo = foo;
     }

@@ -1,4 +1,18 @@
+/**
+ * ProjectController:
+ * 
+ * The form to create or to save a project.
+ */
 class ProjectController extends Controller{
+
+    /**
+     * Creates an instance of Project Controller
+     * @constructor
+     * 
+     * @param {Object} fb Firebase Reference to a user's projects
+     * @param {String} id Optional identifier for a project
+     * @param {Objec} model Optional model object.
+     */
     constructor(fb, id = null, model = null){
         super(null);
         this.id = id;
@@ -10,6 +24,9 @@ class ProjectController extends Controller{
         }
     }
 
+    /**
+     * Creates the HTML of this Object.
+     */
     render(){
         let saveBtn = (this.id) ? 'Save' : 'Create';
         return '\
@@ -47,6 +64,9 @@ class ProjectController extends Controller{
         ';
     }
 
+    /**
+     * Sends the content of the form to the ProjectModel Object.
+     */
     async save(){
         let project = {
             title: $('#input-title').val(),
@@ -64,31 +84,17 @@ class ProjectController extends Controller{
         }
     }
 
-    async appendTo(parent){
-        await super.appendTo(parent);
-        this.activate();
-    }
-
-    async prependTo(parent){
-        await super.prependTo(parent);
-        this.activate();
-    }
-
+    /**
+     * Function that will run when the object is appended or prepended.
+     */
     activate(){
         $('.close-project-form').on('click', $.proxy(this.hide, this));
         $('#save-project').on('click', $.proxy(this.save, this));
     }
 
-    show(){
-        super.show();
-        this.reset();
-    }
-
-    hide(){
-        super.hide();
-        this.reset();
-    }
-
+    /**
+     * Function that will run when the form is hiden and shown.
+     */
     async reset(){
         if(this.id){
             //reset to object values
