@@ -142,6 +142,25 @@ class ProjectModel extends Model{
     }
 
     /**
+     * Verifies that the project exist on Firebase
+     * 
+     * @returns {Boolean} Representing whether or not the project has been created before.
+     */
+    async exists(){
+        if(this.id === null){
+            throw new Error('No project specified');
+        }
+
+        let project = await this.get();
+
+        if (project === null){
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
      * Deletes the specified project.
      * Fails if no project has been specified.
      * 
