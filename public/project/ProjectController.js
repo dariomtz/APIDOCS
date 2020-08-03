@@ -65,7 +65,7 @@ class ProjectController extends Controller{
      * Sends the content of the form to the ProjectModel Object.
      * @async
      */
-    async save(){
+    async submit(){
         let project = {
             title: $('#input-title').val(),
             id: $('#input-id').val(),

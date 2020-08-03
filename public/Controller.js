@@ -50,6 +50,12 @@ class Controller extends Showable{
 		
 	}
 
+	pressKey(e){
+		if(e.which === 13){
+			this.submit();
+		}
+	}
+
 	activate(){
 		this.hide();
 	}
