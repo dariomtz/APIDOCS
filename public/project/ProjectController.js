@@ -13,15 +13,9 @@ class ProjectController extends Controller{
      * @param {String} id Optional identifier for a project
      * @param {Objec} model Optional model object.
      */
-    constructor(fb, id = null, model = null){
-        super(null);
-        this.id = id;
-        this.HTMLid = (id) ? id + '-project-form' : 'project-form';
-        if (model){
-            this.model = model;
-        }else{
-            this.model = new ProjectModel(fb, id);
-        }
+    constructor(fb, model = null, view = null){
+        super(fb, model, view);
+        this.HTMLid = (this.id) ? this.id + '-project-form' : 'project-form';
     }
 
     /**
@@ -60,7 +54,7 @@ class ProjectController extends Controller{
             </div>\
             \
             <div class="d-flex justify-content-end">\
-                <button type="button" class="btn btn-outline-danger mx-2 close-project-form">Cancel</button>\
+                <button class="btn btn-outline-danger mx-2 close-project-form">Cancel</button>\
                 <button id="save-project" class="btn btn-primary">'+ saveBtn +'</button>\
             </div>\
         </div>\
@@ -92,6 +86,7 @@ class ProjectController extends Controller{
      * Function that will run when the object is appended or prepended.
      */
     activate(){
+        super.activate();
         $('.close-project-form').on('click', $.proxy(this.hide, this));
         $('#save-project').on('click', $.proxy(this.save, this));
     }
@@ -103,11 +98,10 @@ class ProjectController extends Controller{
     async reset(){
         if(this.id){
             //reset to object values
-            await this.model.get();
-            $('#input-title').val(this.model.title);
-            $('#input-id').val(this.model.id);
-            $('#input-description').val(this.model.description);
-            $('#input-URI').val(this.model.URI);
+            $('#input-title').val(this.model.object.title);
+            $('#input-id').val(this.model.object.id);
+            $('#input-description').val(this.model.object.description);
+            $('#input-URI').val(this.model.object.URI);
         }else{
             //reset to empty
             $('#input-title').val('');

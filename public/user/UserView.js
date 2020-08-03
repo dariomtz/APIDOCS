@@ -27,7 +27,6 @@ class UserView extends View{
 
 			this.projectController = new ProjectController(this.controller.projects);
 			await this.projectController.appendTo($('#add-project-form'));
-			this.projectController.hide();
 			this.projectController.setHideShowFunction($.proxy(this.closeAddProject, this));
 		}
 

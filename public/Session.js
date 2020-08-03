@@ -1,6 +1,5 @@
-class Session extends Controller {
+class Session {
 	constructor(firebase, listener){
-		super(firebase);
 		this.auth = firebase.auth();
 		this.observer();
 		this.user = null;

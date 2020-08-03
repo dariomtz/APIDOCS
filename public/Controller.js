@@ -1,10 +1,16 @@
 class Controller extends Showable{
-	constructor(firebase = null){
+	constructor(fb, model = null,  view = null){
 		super();
-		this.firebase = firebase;
-		if(firebase){
-			this.db = firebase.database();
-		}
+		this.fb = fb;
+		this.view = view;
+
+		if (model){
+			this.model = model;
+			this.id = this.model.id;
+        }else{
+			this.id = null;
+            this.model = new ProjectModel(this.fb, this.id);
+        }
 	}
 
 	createErrorAlert(error, alertId, parentId){
@@ -23,52 +29,28 @@ class Controller extends Showable{
 	}
 
 	show(){
-        super.show();
-        this.reset();
-    }
-
+		super.show();
+		this.reset();
+		
+		if (this.view){
+			this.view.hide();
+		}
+	}
+	
     hide(){
         super.hide();
-        this.reset();
+		this.reset();
+
+		if (this.view){
+			this.view.show();
+		}
 	}
 	
 	reset(){
 		
 	}
 
-	validateSlug(slug){
-		if(typeof slug !== "string"  || slug === ''){
-	    	var e = new Error('This field must be a non empty string with only lower case letters, numbers and hyphens.');
-			return e;
-		}
-		
-		var validCharacters = '1234567890qwertyuiopasdfghjklzxcvbnm-';
-
-		for (var i = 0; i < slug.length; i++) {
-			var flag = false;
-
-			for (var j = 0; j < validCharacters.length; j++) {
-				if(slug[i] == validCharacters[j]){
-					flag = true
-				}
-			}
-
-			if (!flag) {
-				var e = new Error('This field must have only lower case letters, numbers and hyphens.');
-				return e;
-			}
-		}
-
-		return true;
-	}
-
-	validateField(fieldValue, invalidValue, errName, errMessage){
-		if(fieldValue === invalidValue){
-			let err = new Error();
-			err.name = errName;
-			err.message = errMessage;
-			return err;
-		}
-		return null;
+	activate(){
+		this.hide();
 	}
 }

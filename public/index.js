@@ -1,12 +1,10 @@
 $(document).ready(main);
 
 function main(){
-	var session = new Session(firebase, 'session');
+	
 	var locationList = window.location.pathname.toString().split('/');
 	var username = null;
 	var projectId = null;
-	var userController = null;
-	var projectController = null;
 
 	switch(locationList.length){
 		case 3:
@@ -16,15 +14,14 @@ function main(){
 			break;
 	}
 
-	if(username){
-		userController = new UserController(firebase, username);
+	if (locationList[1] === 'signup') {
+		new SignUpView(session);
+	}else if(locationList[1] === 'signin'){
+		new SignInView(session);
 	}
 
-	if(projectId){
-		projectController = new ProjectController(firebase, username, projectId);
-	}
-	
-	stateOfSession = document.getElementById('session');
+	var session = new Session(firebase, 'session');
+	var stateOfSession = document.getElementById('session');
 	stateOfSession.onchange = () => {
 		if (stateOfSession.checked){
 		
@@ -38,20 +35,27 @@ function main(){
 				window.location.href = "/" + session.user.displayName;
 			})
 
-			if(userController){
-				userController.auth = (session.user.displayName === userController.userName);
-			}
-
 			let userUrl = "/" + session.user.displayName;	
 			$('#navbar-brand').attr("href", userUrl);
 			if(locationList[1] === ""){
 				window.location.href = userUrl;
 			}
 
+			
+			if(projectId){
+				let view = new ProjectView(database.ref(username + '/projects'), projectId, true);
+				view.appendTo($('#content'))
+			}else {
+				
+			}
+
 		}else{
 
-			if(userController){
-				userController.auth = false;
+			if(projectId){
+				let view = new ProjectView(database.ref(username + '/projects'), projectId, false);
+				view.appendTo($('#content'))
+			}else {
+				
 			}
 
 			$('#btn-sign-in').removeClass("d-none");
@@ -62,23 +66,11 @@ function main(){
 		}
 
 		$('#navbar-spinner').addClass('d-none');
-		
-		if(projectController){
-			new ProjectView(userController, projectController);
-		}else if(userController){
-			new UserView(userController);
-		}
 	}
 
 	$('#btn-sign-out').on('click', () => {
 		$('#navbar-spinner').removeClass('d-none');
 		$('#btn-sign-out').addClass("d-none");
 		session.signOut();
-	});
-
-	if (locationList[1] === 'signup') {
-		new SignUpView(session);
-	}else if(locationList[1] === 'signin'){
-		new SignInView(session);
-	}
+	});	
 }

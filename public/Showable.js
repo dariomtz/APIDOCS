@@ -39,9 +39,6 @@ class Showable {
      */
     show(){
         $('#' + this.HTMLid).removeClass('d-none');
-        if(this.foo !== undefined){
-            this.foo();
-        }
     }
 
     /**
@@ -49,17 +46,5 @@ class Showable {
      */
     hide(){
         $('#' + this.HTMLid).addClass('d-none');
-        if(this.foo !== undefined){
-            this.foo();
-        }
-    }
-
-    /**
-     * A method that runs every time the showable is hiden and shown.
-     * 
-     * @param {function} foo The function to be run when the set and hide.
-     */
-    setHideShowFunction(foo){
-        this.foo = foo;
     }
 }
