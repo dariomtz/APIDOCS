@@ -1,4 +1,4 @@
-class UserController extends Controller {
+class UserController extends Model {
 	constructor(firebase, userName){
 		super(firebase);
 		this.userName = userName;
