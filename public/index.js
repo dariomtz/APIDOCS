@@ -1,10 +1,11 @@
 $(document).ready(main);
 
 function main(){
-	
+	var session = new SessionModel(firebase, 'session');
 	var locationList = window.location.pathname.toString().split('/');
 	var username = null;
 	var projectId = null;
+	var view = null;
 
 	switch(locationList.length){
 		case 3:
@@ -15,12 +16,15 @@ function main(){
 	}
 
 	if (locationList[1] === 'signup') {
-		new SignUpView(session);
+		view = new SignUpController(session);
 	}else if(locationList[1] === 'signin'){
-		new SignInView(session);
+		view = new SignInController(session);
 	}
 
-	var session = new Session(firebase, 'session');
+	if (view){
+		view.appendTo($('#auth-page'));
+	}
+	
 	var stateOfSession = document.getElementById('session');
 	stateOfSession.onchange = () => {
 		if (stateOfSession.checked){

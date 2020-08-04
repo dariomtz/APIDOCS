@@ -15,6 +15,9 @@ class ProjectController extends Controller{
      */
     constructor(fb, model = null, view = null){
         super(fb, model, view);
+        if(!model){
+            this.model = new ProjectModel(this.fb, this.id);
+        }
         this.HTMLid = (this.id) ? this.id + '-project-form' : 'project-form';
     }
 

@@ -1,4 +1,4 @@
-class SignInView extends Controller{
+class SignInController extends Controller{
 	constructor(model){
 		super();
 		this.model=model;
@@ -6,13 +6,13 @@ class SignInView extends Controller{
 
 	render(){
 		return'\
-		<div id="sign-in-form" class="m-5 p-5 d-none text-center">\
+		<div id="sign-in-form" class="m-5 p-5 text-center">\
 			<h1 class="">Sign In</h1>\
 			<br>\
 			\
 			<input id="sign-in-email" class="form-control m-3" placeholder="Email">\
 			\
-			<input id = "sign-in-password" class="form-control m-3" placeholder="Password">\
+			<input id = "sign-in-password" type="password" class="form-control m-3" placeholder="Password">\
 			\
 			<button id="button" class="btn btn-dark m-2">Submit</button>\
 			<br>\
@@ -26,7 +26,7 @@ class SignInView extends Controller{
 		$('#spinner-auth').addClass('d-none');
 		$('#spinner-auth').removeClass('d-flex');
 
-		$('#button').on('click', $.proxy(this.submitForm, this));	
+		$('#button').on('click', $.proxy(this.submit, this));	
 		$('#sign-in-email').on('keypress', $.proxy(this.pressKey, this));
 		$('#sign-in-password').on('keypress', $.proxy(this.pressKey, this));
 

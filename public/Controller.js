@@ -9,7 +9,6 @@ class Controller extends Showable{
 			this.id = this.model.id;
         }else{
 			this.id = null;
-            this.model = new ProjectModel(this.fb, this.id);
         }
 	}
 

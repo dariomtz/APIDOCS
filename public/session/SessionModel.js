@@ -1,4 +1,4 @@
-class Session extends Model{
+class SessionModel extends Model{
     constructor(fb, listener){
         super(null, null);
         this.auth = fb.auth();
@@ -9,21 +9,26 @@ class Session extends Model{
 		this.logged = false;
     }
 
-    signUp(email, password, username, photoURL = null){
+    signUp(email, password, confirmation, username, photoURL = null){
 		return new Promise(resolve => {
-            var validations = [
-                this.validateSlug(username, 'Username'),
-                this.available(username)
-            ]
+            this.available(username)
+            .then(available => {
+                var validations = [
+                    this.validateSlug(username, 'Username'),
+                    available,
+                    this.validateField(password === confirmation, false, 'Invalid Password', 'The password does not match with the confirmation.')
+                ];
 
-		    for (const validation of validations) {
-                if (validation instanceof Error) {
-                    resolve(validation);
-                    return;
+                for (const validation of validations) {
+                    if (validation instanceof Error) {
+                        resolve(validation);
+                        console.log(validation);
+                        return;
+                    }
                 }
-            }
 
-			this.auth.createUserWithEmailAndPassword(email, password)
+                return this.auth.createUserWithEmailAndPassword(email, password)
+            })
 			.then(UserCrendential => {
 				this.user = this.auth.currentUser;
 				return this.user.updateProfile({
@@ -99,8 +104,12 @@ class Session extends Model{
     }
     
     available(username){
-        return new Promise(resolve => {    
-            this.db.child(username).once('value')
+        return new Promise(resolve => {   
+            if(username === "") {
+                resolve(null);
+                return;
+            }
+            this.db.ref(username).once('value')
             .then(snap => {
                 if (snap.exists()) {
                     resolve(this.createError(
