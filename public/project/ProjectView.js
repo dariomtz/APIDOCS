@@ -66,7 +66,7 @@ class ProjectView extends View{
 			$('.edit').remove();
 		}
 		
-		$('#spinner-project').remove();
+		$('#spinner-user').remove();
 	}
 
 	toggleEdit(){
