@@ -51,7 +51,7 @@ class UserProjectsView extends View{
 			projectView.appendTo($('#project-list').children('.row').last())
 		}
 
-		$('#spinner-user').remove();
+		$('#main-spinner').remove();
 	}
 
 	newRow(){

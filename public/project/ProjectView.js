@@ -66,7 +66,7 @@ class ProjectView extends View{
 			$('.edit').remove();
 		}
 		
-		$('#spinner-project').remove();
+		$('#main-spinner').remove();
 	}
 
 	toggleEdit(){
@@ -83,5 +83,26 @@ class ProjectView extends View{
 		$('#project-URI').html(project.URI);
 		$('#project-updated').html(project.updated);
 		$('#project-created').html(project.created);
+	}
+
+	confirmDelete(){
+		return '\
+		<div id="confirm-delete-project" class="confirm d-flex fixed-top w-100 h-100 justify-content-center align-items-center">\
+			<div class="alert alert-danger m-auto p-5 ">\
+				<button id="close-confirm-delete-project" type="button" class="close" aria-label="Close">\
+					<span aria-hidden="true">&times;</span>\
+				</button>\
+				<span class="h3">Are you sure?</span>\
+				<hr>\
+				<p>Deletion is permanent and all the information of your project cannot be recovered.</p>\
+				<span>Type "CONFIRM" and then press delete.</span>\
+				<br>\
+				<input id="confirm-delete-project-input" class="form-control my-2" type="text">\
+				<div class="d-flex justify-content-between align-items-center my-2">\
+					<button id="cancel-confirm-delete-project" class="btn btn-outline-secondary bg-light text-secondary w-50 mr-1">Cancel</button>\
+					<button id="confirm-delete-project-btn" class="btn btn-secondary active w-50 ml-1">Delete</button>\
+				</div>\
+			</div>\
+		</div>'
 	}
 }
