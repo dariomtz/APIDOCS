@@ -13,13 +13,13 @@ class UserProjectsView extends View{
 
 		if (user === null){
 			return'\
-			<div id="not-found-page" class="p-5 d-none">\
+			<div id="not-found-page" class="p-5">\
 				<h1> 404 Not Found: The username "' + this.id + '" does not belong to any user.</h1>\
 			</div>'
 		}
 
 		return '\
-		<div id="user-page" class="p-5 d-none container">\
+		<div id="user-page" class="p-5 container">\
 			<div id="' + this.HTMLid + '">\
 				<h1>' + this.id +'</h1>\
 				<hr>\
@@ -36,7 +36,7 @@ class UserProjectsView extends View{
 		if (this.auth) {
 			$('#project-list').children('.row').last().prepend(this.createAddProjectCard());
 			$('#btn-add-project').on('click', $.proxy(this.openAddProject, this));
-			this.projectController.appendTo($('#add-project-form-wrapper'));
+			this.controller.appendTo($('#add-project-form-wrapper'));
 		}
 
 		if (this.projects === null){
@@ -44,7 +44,6 @@ class UserProjectsView extends View{
 		}
 
 		for (const project in this.projects){
-			hasProjects = true;
 			if($('#project-list').children('.row').last().children().length == 3){
 				$('#project-list').append($(this.newRow()));
 			}
@@ -52,7 +51,7 @@ class UserProjectsView extends View{
 			projectView.appendTo($('#project-list').children('.row').last())
 		}
 
-		$('#spinner-project').remove();
+		$('#spinner-user').remove();
 	}
 
 	newRow(){

@@ -28,38 +28,45 @@ function main(){
 	var stateOfSession = document.getElementById('session');
 	stateOfSession.onchange = () => {
 		if (stateOfSession.checked){
-		
+			let signedUser = session.user.displayName;
+			let isOwner = signedUser === username;
+
 			$('#btn-sign-out').removeClass("d-none");
 			$('#btn-sign-in').addClass("d-none");
 			$('#btn-sign-up').addClass("d-none");
 
 			$('#home-container').removeClass("d-none");
-			$('#username-display').text(session.user.displayName);
+			$('#username-display').text(signedUser);
+
+			let userUrl = "/" + signedUser;	
 			$('#btn-home').on('click', () =>{
-				window.location.href = "/" + session.user.displayName;
+				window.location.href = userUrl;
 			})
 
-			let userUrl = "/" + session.user.displayName;	
 			$('#navbar-brand').attr("href", userUrl);
+
 			if(locationList[1] === ""){
 				window.location.href = userUrl;
 			}
-
 			
 			if(projectId){
-				let view = new ProjectView(database.ref(username + '/projects'), projectId, true);
+				view = new ProjectView(database.ref(username + '/projects'), projectId, isOwner);
 				view.appendTo($('#content'))
 			}else {
-				
+				view = new UserProjectsView(database.ref(username), isOwner);
+				view.appendTo($('#content'))
 			}
 
 		}else{
 
 			if(projectId){
-				let view = new ProjectView(database.ref(username + '/projects'), projectId, false);
+				view = new ProjectView(database.ref(username + '/projects'), projectId, false);
 				view.appendTo($('#content'))
-			}else {
-				
+			} else {
+				if (locationList[1] !== 'signin' && locationList[1] !== 'signup') {
+					view = new UserProjectsView(database.ref(username), false);
+					view.appendTo($('#content'))
+				}
 			}
 
 			$('#btn-sign-in').removeClass("d-none");

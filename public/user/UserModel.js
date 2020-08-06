@@ -9,7 +9,9 @@ class UserModel extends Model {
 			this.fb.once('value')
 			.then(snap => {
 				let profile = snap.val();
-				delete profile.projects;
+				if (profile){
+					delete profile.projects;
+				}
 				resolve(profile);
 				return;
 			})
