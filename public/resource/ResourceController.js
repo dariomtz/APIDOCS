@@ -16,18 +16,18 @@ class ResourceController extends Controller {
             </button>\
             <div class="my-3">\
                 <h4>Title</h4>\
-                <input id="title-' + this.HTMLid + '" class="form-control" placeholder="Title" maxlength="70">\
+                <input id="input-title-' + this.HTMLid + '" class="form-control" placeholder="Title" maxlength="70">\
             </div>\
             \
             <div class="my-3">\
                 <h4>Description</h4>\
-                <textarea id="description-' + this.HTMLid + '" class="form-control rounded" placeholder="Description" rows="2">\
+                <textarea id="input-description-' + this.HTMLid + '" class="form-control rounded" placeholder="Description" rows="2">\
                 </textarea>\
             </div>\
             \
             <div class="d-flex justify-content-end">\
-                <button id="cancel-' + this.id + '" type="button" class="btn btn-secondary mx-1">Cancel</button>\
-                <button id="save-' + this.id + '" type="button" class="btn btn-primary mx-1"></button>\
+                <button id="cancel-' + this.HTMLid + '" type="button" class="btn btn-secondary mx-1">Cancel</button>\
+                <button id="save-' + this.HTMLid + '" type="button" class="btn btn-primary mx-1"></button>\
             </div>\
         </div>\
         ';
@@ -38,15 +38,20 @@ class ResourceController extends Controller {
         $('#close-' + this.HTMLid).on('click', $.proxy(this.hide, this));
         $('#cancel-' + this.HTMLid).on('click', $.proxy(this.hide, this));
         $('#save-' + this.HTMLid).on('click', $.proxy(this.submit, this));
+        if (this.id){
+            $('#save-' + this.HTMLid).html('Save');
+        }else{
+            $('#save-' + this.HTMLid).html('Add');
+        }
     }
 
     async submit(){
         let resource = {
-            title: $('#title-' + this.HTMLid).val(),
-            description : $('#description-' + this.HTMLid).val()
+            title: $('#input-title-' + this.HTMLid).val(),
+            description : $('#input-description-' + this.HTMLid).val()
         }
 
-        let response = this.model.set(resource);
+        let response = await this.model.set(resource);
 
         if (response  instanceof Error){
             this.createErrorAlert(response, 'error-' + this.HTMLid, this.HTMLid);
@@ -57,14 +62,14 @@ class ResourceController extends Controller {
 
     async reset(){
         if (this.id){
-            let resource = this.model.get();
-            $('#title-' + this.HTMLid).val(resource.title);
-            $('#description-' + this.HTMLid).val(resource.description);
+            let resource = await this.model.get();
+            $('#input-title-' + this.HTMLid).val(resource.title);
+            $('#input-description-' + this.HTMLid).val(resource.description);
         }else{
-            $('#title-' + this.HTMLid).val('');
-            $('#description-' + this.HTMLid).val('');
+            $('#input-title-' + this.HTMLid).val('');
+            $('#input-description-' + this.HTMLid).val('');
         }
-        $('#title-' + this.HTMLid).focus();
+        $('#input-title-' + this.HTMLid).focus();
         $('#error-' + this.HTMLid).remove();
     }
 }

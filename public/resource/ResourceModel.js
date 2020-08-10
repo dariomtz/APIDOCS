@@ -1,7 +1,6 @@
 class ResourceModel extends Model {
 	constructor(fb, id = null){
 		super(fb, id);
-		this.id = id;
 		this.object = null;
 	}
 
@@ -11,7 +10,7 @@ class ResourceModel extends Model {
 			return validation
 		}
 
-		if (!id){
+		if (!this.id){
 			//create new resource
 			let push = this.fb.push();
 			resource.id = push.key;
@@ -38,17 +37,18 @@ class ResourceModel extends Model {
 					resource.id = this.id;
 					this.object = resource;
 					resolve(null);
+					return;
 				})
 				.catch(err => {
 					resolve(err);
 					return;
-				})
-			})
+				});
+			});
 		}
 	}
 
 	get(){
-		if (!id){
+		if (!this.id){
 			throw new Error('No resource specified');
 		}
 
@@ -71,7 +71,7 @@ class ResourceModel extends Model {
 	}
 
 	delete(){
-		if (!id){
+		if (!this.id){
 			throw new Error('No resource specified');
 		}
 
@@ -95,7 +95,7 @@ class ResourceModel extends Model {
         ];
 
         fields.forEach((field)=>{
-            if (!field in project){
+            if (!field in resource){
                 return this.createError(
                     'Missing ' + field,
                     'A project must have an ' + field + 'field.'

@@ -53,7 +53,8 @@ class ProjectView extends View{
 
 	activate(){
 		for (const resource in this.model.object.resources) {
-			//create resource view
+			let r = new ResourceView(this.fb.child(this.id).child('resources'), resource, this.edit);
+			r.appendTo($('#resources'));
 		}
 
 		//append resoure controller
