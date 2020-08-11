@@ -91,7 +91,7 @@ class ProjectController extends Controller{
     activate(){
         super.activate();
         $('.close-project-form').on('click', $.proxy(this.hide, this));
-        $('#save-project').on('click', $.proxy(this.save, this));
+        $('#save-project').on('click', $.proxy(this.submit, this));
     }
 
     /**

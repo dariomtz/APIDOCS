@@ -128,10 +128,6 @@ class ResourceView extends View{
 		this.addController.show();
 	}
 
-	createEndpoint(endpoint){
-
-	}
-
 	toggleDropdown(){
 		$('#' + this.id + '-dropdown').toggleClass('dropup');
 		$('#' + this.id + '-info').toggleClass('d-none');

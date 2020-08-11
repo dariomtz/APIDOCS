@@ -13,10 +13,12 @@ class ProjectView extends View{
 		let project = await this.model.get();
 
 		if(project === null){
+			this.notFound = true;
 			return '\
-			<div id="not-found-project" class="p-5 d-none">\
+			<div id="not-found-project" class="p-5">\
 				<h1> 404 Not Found: This user does not have a project named "' + this.id + '".</h1>\
-			</div>'
+			</div>\
+			';
 		}
 
 		return '\
@@ -27,7 +29,7 @@ class ProjectView extends View{
 					<div class= "py-2 px-0 col">\
 						<span id="project-id" class="h6 text-muted">' + project.id +'</span>\
 					</div>\
-					<button id="btn-copy-link-clipboard" class="col btn btn-light">\
+					<button id="btn-copy-link" class="col btn btn-light">\
 						&#x1f4cb Copy project link to clipboard\
 					</button>\
 				</div>\
@@ -52,6 +54,15 @@ class ProjectView extends View{
 	}
 
 	activate(){
+		$('#main-spinner').remove();
+
+		if (this.notFound){
+			return;
+		}
+
+		$('#btn-copy-link').on('click', $.proxy(this.copyLink, this));
+		$('#delete-project').on('click', $.proxy(this.confirmDelete, this));
+
 		for (const resource in this.model.object.resources) {
 			let r = new ResourceView(this.fb.child(this.id).child('resources'), resource, this.edit);
 			r.appendTo($('#resources'));
@@ -67,7 +78,7 @@ class ProjectView extends View{
 			$('.edit').remove();
 		}
 		
-		$('#main-spinner').remove();
+		
 	}
 
 	toggleEdit(){
@@ -87,10 +98,21 @@ class ProjectView extends View{
 	}
 
 	confirmDelete(){
+		$('#content').append(this.confirmDeleteAlert());
+		$('.cancel').on('click', $.proxy(this.closeConfirm, this));
+		$('#confirm-delete-btn').on('click', $.proxy(this.delete, this));
+		$('#confirm-delete-input').on('keyup', $.proxy(this.checkConfirm, this));
+	}
+
+	closeConfirm(){
+		$('#confirm-delete-project').remove();
+	}
+
+	confirmDeleteAlert(){
 		return '\
 		<div id="confirm-delete-project" class="confirm d-flex fixed-top w-100 h-100 justify-content-center align-items-center">\
 			<div class="alert alert-danger m-auto p-5 ">\
-				<button id="close-confirm-delete-project" type="button" class="close" aria-label="Close">\
+				<button id="close-confirm-delete-project" type="button" class="close cancel" aria-label="Close">\
 					<span aria-hidden="true">&times;</span>\
 				</button>\
 				<span class="h3">Are you sure?</span>\
@@ -98,12 +120,43 @@ class ProjectView extends View{
 				<p>Deletion is permanent and all the information of your project cannot be recovered.</p>\
 				<span>Type "CONFIRM" and then press delete.</span>\
 				<br>\
-				<input id="confirm-delete-project-input" class="form-control my-2" type="text">\
+				<input id="confirm-delete-input" class="form-control my-2" type="text">\
 				<div class="d-flex justify-content-between align-items-center my-2">\
-					<button id="cancel-confirm-delete-project" class="btn btn-outline-secondary bg-light text-secondary w-50 mr-1">Cancel</button>\
-					<button id="confirm-delete-project-btn" class="btn btn-secondary active w-50 ml-1">Delete</button>\
+					<button id="cancel-confirm-delete-project" class="btn btn-outline-secondary bg-light text-secondary w-50 mr-1 cancel">Cancel</button>\
+					<button id="confirm-delete-btn" class="btn btn-secondary active w-50 ml-1">Delete</button>\
 				</div>\
 			</div>\
 		</div>'
+	}
+
+	copyLink(){
+		const el = document.createElement('textarea');
+		el.value = window.location.href;
+		document.body.appendChild(el);
+		el.select();
+		document.execCommand('copy');
+		document.body.removeChild(el);
+		$('#btn-copy-link').removeClass('btn-light');
+		$('#btn-copy-link').addClass('btn-outline-success');
+	}
+
+	checkConfirm(){
+		console.log($('#confirm-delete-input').val());
+		if($('#confirm-delete-input').val() === 'CONFIRM'){			
+			$('#confirm-delete-btn').removeClass('active');
+			$('#confirm-delete-btn').removeClass('btn-secondary');
+			$('#confirm-delete-btn').addClass('btn-danger');
+		}else if(!$('#confirm-delete-btn').hasClass('active')){
+			$('#confirm-delete-btn').addClass('active');
+			$('#confirm-delete-btn').addClass('btn-secondary');
+			$('#confirm-delete-btn').removeClass('btn-danger');
+		}
+	}
+
+	async delete(){
+		if (!$('#confirm-delete-btn').hasClass('active')) {
+			await this.model.delete();
+			window.location = '/' + this.model.user;
+		}
 	}
 }
