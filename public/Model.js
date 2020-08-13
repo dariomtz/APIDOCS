@@ -90,4 +90,40 @@ class Model{
 
 		return null;
     }
+
+    containsFields(object, fields){
+        for (const field of fields){
+			if (!field in object){
+                return this.createError(
+                    'Missing ' + field,
+                    'A project must have an ' + field + 'field.'
+                );
+            }
+        }
+        return null;
+    }
+
+    checkValidations(validations){
+        for (const validation of validations) {
+			if (validation instanceof Error){
+				return validation;
+			}	
+		}
+    }
+
+    validateObject(object, fields, validations){
+        let fieldCheck = this.containsFields(object, fields);
+        
+        if (fieldCheck instanceof Error){
+            return fieldCheck;
+        }
+
+        let checks = this.checkValidations(validations);
+
+        if (checks instanceof Error){
+            return checks;
+        }
+
+        return null;
+    }
 }

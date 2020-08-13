@@ -92,24 +92,23 @@ class ResourceModel extends Model {
 		const fields = [
             'title',
             'description',
-        ];
-
-        fields.forEach((field)=>{
-            if (!field in resource){
+		];
+		
+		for (const field of fields){
+			if (!field in resource){
                 return this.createError(
                     'Missing ' + field,
                     'A project must have an ' + field + 'field.'
                 );
             }
-		});
+		}
 		
 		let validations = [
 			this.validateField(resource.title, '', 'Invalid Title', 'The Title field cannot be empty.'),
 			this.validateField(resource.description, '', 'Invalid Description', 'The Description field cannot be empty.'),
 		]
 
-		for (const key in validations) {
-			const validation = validations[key];
+		for (const validation of validations) {
 			if (validation instanceof Error){
 				return validation;
 			}	
