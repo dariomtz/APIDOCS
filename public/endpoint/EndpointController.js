@@ -66,7 +66,8 @@ class EndpointController extends Controller{
 	}
 
 	activate(){
-
+		$('.cancel-' + this.HTMLid).on('click', $.proxy(this.hide, this));
+		$('#' + this.HTMLid + '-save-btn').on('click', $.proxy(this.submit, this));
 	}
 
 	async submit(){

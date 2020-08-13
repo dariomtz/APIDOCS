@@ -4,10 +4,13 @@ class AddNewView extends View {
         this.HTMLid = 'btn-add-' + this.id;
         this.parentView = parentView;
         if (this.fb.key === 'resources'){
+            this.type = 'resource';
             this.model = new ResourceModel(this.fb);
             this.controller = new ResourceController(this.fb, this.model, this);
         } else {
-            //model and controller for endpoint
+            this.type = 'endpoint';
+            this.model = new EndpointModel(this.fb);
+            this.controller = new EndpointController(this.fb, this.model, this);
         }
         
     }
@@ -15,7 +18,7 @@ class AddNewView extends View {
     async render(){
         return '\
         <div id="' + this.HTMLid +'-wrapper">\
-            <button id="' + this.HTMLid + '" type="button" class="edit btn btn-outline-primary btn-block my-3">\
+            <button id="' + this.HTMLid + '" type="button" class="edit btn btn-outline-primary btn-block">\
                 <span class="h3">+</span>\
             </button>\
         </div>';
@@ -32,12 +35,20 @@ class AddNewView extends View {
 
     show(){
         super.show();
-        if (this.controller.model.id){
-            //create new resource
-            let resource = new ResourceView(null, null, true, this.model);
-            this.parentView.addChild(resource);
-            this.model = new ResourceModel(this.fb);
-            this.controller.model = this.model;
+        if (this.model.id){
+            let view;
+            if(this.type === 'resource'){
+                view = new ResourceView(this.fb, this.model.id, true, this.model);
+                this.model = new ResourceModel(this.fb);
+                this.controller.model = this.model;
+            }else{
+                //view = new EndpointView(this.fb, this.model.id, true, this.model);
+                this.model = new EndpointModel(this.fb);
+                this.controller.model = this.model;
+            }
+
+            this.parentView.addChild(view);
+            
         }
     }
 }
