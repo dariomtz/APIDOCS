@@ -110,6 +110,6 @@ class EndpointModel extends Model{
             this.validateField(isNaN(endpoint.statusCode), true, 'Invalid Response Code', 'The Response Code must be a number'),
         ];
         
-        this.validateObject(endpoint, fields, validations);
+        return this.validateObject(endpoint, fields, validations);
     }
 }

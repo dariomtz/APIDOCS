@@ -79,7 +79,7 @@ class ProjectController extends Controller{
         let response = await this.model.set(project);
 
         if (response instanceof Error){
-            this.createErrorAlert(response, 'edit-project-alert', 'project-form');
+            this.createErrorAlert(response, 'edit-project-alert', this.HTMLid);
         }else{
             this.hide();
         }

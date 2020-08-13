@@ -192,21 +192,12 @@ class ProjectModel extends Model{
      * @returns {Error} The error of the project, otherwise null.
      */
     validate(project){
-        const fields = [
+        let fields = [
             'id',
             'title',
             'description',
             'URI',
         ];
-
-        fields.forEach((field)=>{
-            if (!field in project){
-                return this.createError(
-                    'Missing ' + field,
-                    'A project must have an ' + field + 'field.'
-                );
-            }
-        });
 
         let validations = [
             this.validateSlug(project.id, 'Project Identifier'),
@@ -214,13 +205,7 @@ class ProjectModel extends Model{
             this.validateField(project.title, '', 'Invalid Description', 'The Description field cannot be empty.'),
         ];
 
-        for (const validation of validations) {
-            if (validation instanceof Error){
-                return validation;
-            }
-        }
-
-        return null;
+        return this.validateObject(project, fields, validations);
     }
 
     /**
