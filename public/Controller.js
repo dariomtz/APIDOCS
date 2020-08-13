@@ -3,9 +3,9 @@ class Controller extends Showable{
 		super();
 		this.fb = fb;
 		this.view = view;
+		this.model = model;
 
-		if (model){
-			this.model = model;
+		if (model){	
 			this.id = this.model.id;
         }else{
 			this.id = null;
