@@ -1,10 +1,10 @@
 class ProjectView extends View{
-	constructor (fb, id, edit){
+	constructor (fb, id, editable){
 		super(fb, id);
 		this.model = new ProjectModel(this.fb, this.id);
 		this.HTMLid = 'project-info';
-		this.edit = edit;
-		if (this.edit){
+		this.editable = editable;
+		if (this.editable){
 			this.controller = new ProjectController(this.fb, this.model, this);
 		}
 	}
@@ -46,9 +46,9 @@ class ProjectView extends View{
 			</div>\
 			<div id="project-form-wrapper"></div>\
 			\
-			<div id="resources" class="my-2">\
-				<div id="resource-list" class=""></div>\
-			</div>\
+			<div id="' + this.HTMLid + '-list" class="my-2"></div>\
+			<hr class="edit">\
+			<div id="add-resource-wrapper" class="my-2"></div>\
 		</div>\
 		'
 	}
@@ -64,16 +64,17 @@ class ProjectView extends View{
 		$('#delete-project').on('click', $.proxy(this.confirmDelete, this));
 
 		for (const resource in this.model.object.resources) {
-			let r = new ResourceView(this.fb.child(this.id).child('resources'), resource, this.edit);
-			r.appendTo($('#resources'));
+			let r = new ResourceView(this.fb.child(this.id).child('resources'), resource, this.editable);
+			this.addChild(r);
 		}
 
-		//append resoure controller
-		
-		//append project controller
-		if(this.edit){
+		if(this.editable){
+			let resourceCreator =  new AddNewView(this.fb.child(this.id).child('resources'), 'resource', this);
+			resourceCreator.appendTo($('#add-resource-wrapper'));
+
 			this.controller.appendTo($('#project-form-wrapper'));
-			$('#edit-project').on('click', $.proxy(this.toggleEdit, this));
+
+			$('#edit-project').on('click', $.proxy(this.edit, this));
 		}else{
 			$('.edit').remove();
 		}
@@ -81,7 +82,7 @@ class ProjectView extends View{
 		
 	}
 
-	toggleEdit(){
+	edit(){
 		this.controller.show();
 	}
 

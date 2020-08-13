@@ -1,11 +1,19 @@
 class ResourceView extends View{
-	constructor (fb, id, editable){
+	constructor (fb, id, editable, model = null){
 		super(fb, id);
 		this.editable = editable;
-		this.model = new ResourceModel(fb, id);
-		if (this.editable){
-			this.controller = new ResourceController(fb, this.model, this);
+		
+		if (model){
+			this.model = model;
+			this.id = this.model.id;
+		}else{
+			this.model = new ResourceModel(fb, id);
 		}
+		
+		if (this.editable){
+			this.controller = new ResourceController(null, this.model, this);
+		}
+
 		this.HTMLid = this.id;
 	}
 
@@ -101,14 +109,13 @@ class ResourceView extends View{
 		'</div>';
 	}
 
-	activate(){
-		this.controller.appendTo($('#' + this.HTMLid + '-wrapper'));
+	activate(){		
 		$('#dropdown-' + this.id).on('click', $.proxy(this.toggleDropdown, this));
-
 
 		//add existing endpoints
 
 		if (this.editable) {
+			this.controller.appendTo($('#' + this.HTMLid + '-wrapper'));
 			$('#edit-' + this.id).on('click', $.proxy(this.edit, this));			
 			$('#delete-' + this.id).on('click', $.proxy(this.delete, this));
 		}else{

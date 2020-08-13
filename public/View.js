@@ -4,6 +4,10 @@ class View extends Showable{
 		this.fb = fb;
 		this.id = id;
 	}
+
+	addChild(view){
+		view.appendTo($('#' + this.HTMLid + '-list'));
+	}
 	
 
 }
