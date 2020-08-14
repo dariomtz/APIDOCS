@@ -15,19 +15,19 @@ app.get('/', (req, res) => {
 });
 
 app.get('/signin', (req, res) => {
-	res.render('auth', {signin: true})
+	res.render('auth', {title: 'Sign in'})
 });
 
 app.get('/signup', (req, res) => {
-	res.render('auth', {signin: false})
+	res.render('auth', {title: 'Sign up'})
 });
 
 app.get('/:userId', (req, res) => {
-	res.render('user', {userId: req.params['userId']})
+	res.render('dynamic', {title: req.params['userId']})
 });
 
 app.get('/:userId/:projectId', (req, res) => {
-	res.render('project', {userId: req.params['userId'], projectId: req.params['projectId']})
+	res.render('dynamic', {title: req.params['projectId']})
 });
 
 app.get('*', function(req, res){

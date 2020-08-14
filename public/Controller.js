@@ -1,42 +1,61 @@
-class Controller {
-	constructor(firebase){
-		this.firebase = firebase;
-		this.db = firebase.database();
+class Controller extends Showable{
+	constructor(fb, model = null,  view = null){
+		super();
+		this.fb = fb;
+		this.view = view;
+		this.model = model;
+
+		if (model){	
+			this.id = this.model.id;
+        }else{
+			this.id = null;
+        }
 	}
 
-	validateSlug(slug){
-		if(typeof slug !== "string"  || slug === ''){
-	    	var e = new Error('This field must be a non empty string with only lower case letters, numbers and hyphens.');
-			return e;
+	createErrorAlert(error, alertId, parentId){
+		var errorAlert = document.createElement('div');
+		errorAlert.className = 'alert alert-danger';
+		errorAlert.innerHTML = error.name + ': ' + error.message;
+
+		if($('#' + alertId).length){
+			$('#' + alertId).remove();
 		}
+
+		errorAlert.id = alertId;
+
+		$('#' + parentId).prepend(errorAlert);
+		return;
+	}
+
+	show(){
+		super.show();
+		this.reset();
 		
-		var validCharacters = '1234567890qwertyuiopasdfghjklzxcvbnm-';
-
-		for (var i = 0; i < slug.length; i++) {
-			var flag = false;
-
-			for (var j = 0; j < validCharacters.length; j++) {
-				if(slug[i] == validCharacters[j]){
-					flag = true
-				}
-			}
-
-			if (!flag) {
-				var e = new Error('This field must have only lower case letters, numbers and hyphens.');
-				return e;
-			}
+		if (this.view){
+			this.view.hide();
 		}
+	}
+	
+    hide(){
+        super.hide();
+		this.reset();
 
-		return true;
+		if (this.view){
+			this.view.show();
+		}
+	}
+	
+	reset(){
+		
 	}
 
-	validateField(fieldValue, invalidValue, errName, errMessage){
-		if(fieldValue === invalidValue){
-			let err = new Error();
-			err.name = errName;
-			err.message = errMessage;
-			return err;
+	pressKey(e){
+		if(e.which === 13){
+			this.submit();
 		}
-		return null;
+	}
+
+	activate(){
+		this.hide();
 	}
 }

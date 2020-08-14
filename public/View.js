@@ -1,20 +1,15 @@
-class View {
-	constructor(controller){
-		this.controller = controller;
+class View extends Showable{
+	constructor(fb, id, editable, model =null){
+		super();
+		this.fb = fb;
+		this.id = id;
+		this.editable = editable;
+		this.model = model;
 	}
 
-	createErrorAlert(error, alertId, parentId){
-		var errorAlert = document.createElement('div');
-		errorAlert.className = 'alert alert-danger';
-		errorAlert.innerHTML = error.name + ': ' + error.message;
-
-		if($('#' + alertId).length){
-			$('#' + alertId).remove();
-		}
-
-		errorAlert.id = alertId;
-
-		$('#' + parentId).prepend(errorAlert);
-		return;
+	addChild(view){
+		view.appendTo($('#' + this.HTMLid + '-list'));
 	}
+	
+
 }
