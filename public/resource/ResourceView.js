@@ -39,7 +39,7 @@ class ResourceView extends View{
 		      	<div id="' + this.HTMLid + '-info" class="d-flex flex-column m-0 p-3 border-top">\
 		      		<p id="description-' + this.HTMLid + '" class="text-left">'+ resource.description +'</p>\
 		      		\
-					<div id="endpoints-' + this.HTMLid + '"></div>\
+					<div id="' + this.HTMLid + '-list"></div>\
 					<div id="add-endpoint-wrapper-' + this.HTMLid + '"></div>\
 					\
 		      	</div>\
@@ -50,7 +50,10 @@ class ResourceView extends View{
 	activate(){		
 		$('#dropdown-' + this.id).on('click', $.proxy(this.toggleDropdown, this));
 
-		//add existing endpoints
+		for (const endpoint in this.model.object.endpoints) {
+			let endpointView = new EndpointView(this.fb.child(this.id).child('endpoints'), endpoint, this.editable);
+			this.addChild(endpointView);
+		}
 
 		if (this.editable) {
 			let endpointCreator = new AddNewView(this.fb.child(this.id).child('endpoints'), this.HTMLid, this);

@@ -42,7 +42,7 @@ class AddNewView extends View {
                 this.model = new ResourceModel(this.fb);
                 this.controller.model = this.model;
             }else{
-                //view = new EndpointView(this.fb, this.model.id, true, this.model);
+                view = new EndpointView(this.fb, this.model.id, true, this.model);
                 this.model = new EndpointModel(this.fb);
                 this.controller.model = this.model;
             }

@@ -18,9 +18,9 @@ class EndpointController extends Controller{
 			<br><br>\
 			<div class="input-group mb-3">\
 				<div class="input-group-prepend">\
-				<label class="input-group-text" for="input-method' + this.HTMLid + '">Method</label>\
+				<label class="input-group-text" for="input-method-' + this.HTMLid + '">Method</label>\
 				</div>\
-				<select class="custom-select" id="input-method' + this.HTMLid + '">\
+				<select class="custom-select" id="input-method-' + this.HTMLid + '">\
 				<option value="GET">GET</option>\
 				<option value="POST">POST</option>\
 				<option value="PUT">PUT</option>\
@@ -72,15 +72,15 @@ class EndpointController extends Controller{
 
 	async submit(){
 		let endpoint = {
-			method: $('#input-method-' + this.id).val(),
-			summary: $('#input-summary-' + this.id).val(),
-			description: $('#input-description-' + this.id).val(),
-			URI: $('#input-URI-' + this.id).val(),
-			request: $('#input-request-' + this.id).val(),
-			response: $('#input-response-' + this.id).val(),
-			statusCode: $('#input-status-code-' + this.id).val(),
+			method: $('#input-method-' + this.HTMLid).val(),
+			summary: $('#input-summary-' + this.HTMLid).val(),
+			description: $('#input-description-' + this.HTMLid).val(),
+			URI: $('#input-URI-' + this.HTMLid).val(),
+			request: $('#input-request-' + this.HTMLid).val(),
+			response: $('#input-response-' + this.HTMLid).val(),
+			statusCode: $('#input-status-code-' + this.HTMLid).val(),
 		}
-
+		
 		let response = await this.model.set(endpoint);
 
 		if (response instanceof Error){
@@ -93,21 +93,21 @@ class EndpointController extends Controller{
 	async reset(){
 		if(this.id){
 			let endpoint = await this.model.get();
-			$('#input-method-' + this.id).val(endpoint.method);
-			$('#input-summary-' + this.id).val(endpoint.summary);
-			$('#input-description-' + this.id).val(endpoint.description);
-			$('#input-URI-' + this.id).val(endpoint.URI);
-			$('#input-request-' + this.id).val(endpoint.request);
-			$('#input-response-' + this.id).val(endpoint.response);
-			$('#input-status-code-' + this.id).val(endpoint.statusCode);
+			$('#input-method-' + this.HTMLid).val(endpoint.method);
+			$('#input-summary-' + this.HTMLid).val(endpoint.summary);
+			$('#input-description-' + this.HTMLid).val(endpoint.description);
+			$('#input-URI-' + this.HTMLid).val(endpoint.URI);
+			$('#input-request-' + this.HTMLid).val(endpoint.request);
+			$('#input-response-' + this.HTMLid).val(endpoint.response);
+			$('#input-status-code-' + this.HTMLid).val(endpoint.statusCode);
 		}else{
-			$('#input-method-' + this.id).val('');
-			$('#input-summary-' + this.id).val('');
-			$('#input-description-' + this.id).val('');
-			$('#input-URI-' + this.id).val('');
-			$('#input-request-' + this.id).val('');
-			$('#input-response-' + this.id).val('');
-			$('#input-status-code-' + this.id).val('');
+			$('#input-method-' + this.HTMLid).val('GET');
+			$('#input-summary-' + this.HTMLid).val('');
+			$('#input-description-' + this.HTMLid).val('');
+			$('#input-URI-' + this.HTMLid).val('');
+			$('#input-request-' + this.HTMLid).val('');
+			$('#input-response-' + this.HTMLid).val('');
+			$('#input-status-code-' + this.HTMLid).val('');
 		}
         $('#error-' + this.HTMLid).remove();
 	}
