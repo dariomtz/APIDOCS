@@ -139,6 +139,7 @@ class ProjectView extends View{
 		document.body.removeChild(el);
 		$('#btn-copy-link').removeClass('btn-light');
 		$('#btn-copy-link').addClass('btn-outline-success');
+		$('#btn-copy-link').html('&#x1f4cb Copied to clipboard!')
 	}
 
 	checkConfirm(){
