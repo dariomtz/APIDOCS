@@ -1,6 +1,6 @@
 # Open API Docs
 
-Open API Docs is the place the website to host your API documentation. Design to easily document your project and instantly share with others.
+Open API Docs is the place the website to host your API documentation. Designed to easily document your project and instantly share with others.
 
 ## How to contribute?
 
