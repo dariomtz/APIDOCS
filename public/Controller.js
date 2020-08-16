@@ -12,7 +12,7 @@
  */
 class Controller extends Showable{
 	/**
-	 * Creates an instance of a Controller
+	 * Creates an instance of a Controller.
 	 * @constructor
 	 * 
 	 * @param {Object} fb The Firebase Reference object pointing to the place where this data is stored.
