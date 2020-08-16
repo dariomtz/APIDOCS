@@ -1,8 +1,16 @@
 /**
  * Showable:
  * 
- * Showable is an abstract class for objects that will be related to HTML elements.
- * All classes that extend Showable must implement a render method that returns the HTML of the object.
+ * Showable is an abstract class for objects that will be rendered as HTML elements.
+ * 
+ * All classes that extend Showable must implement the following methods:
+ * 
+ * - render(): A method that returns the HTML that will be rendered. 
+ *              It can be an async method, in case that waiting for information is necessary.
+ * 
+ * - activate(): A method that will run right after the object is rendered.
+ *              This is ideal for setting event listeners and rendering elements that depend on
+ *              the object that has just been rendered.
  */
 class Showable {
     
